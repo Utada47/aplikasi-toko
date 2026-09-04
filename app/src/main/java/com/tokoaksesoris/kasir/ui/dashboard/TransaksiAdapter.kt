@@ -12,7 +12,9 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class TransaksiAdapter : ListAdapter<TransaksiItem, TransaksiAdapter.VH>(DIFF) {
+class TransaksiAdapter(
+    private val onItemClick: (TransaksiItem) -> Unit
+) : ListAdapter<TransaksiItem, TransaksiAdapter.VH>(DIFF) {
 
     private val jamFormat = SimpleDateFormat("HH:mm", Locale("in", "ID"))
     private val rupiahFormat = NumberFormat.getNumberInstance(Locale("in", "ID"))
@@ -30,6 +32,7 @@ class TransaksiAdapter : ListAdapter<TransaksiItem, TransaksiAdapter.VH>(DIFF) {
         holder.binding.tvJam.text = jamFormat.format(Date(item.waktu))
         holder.binding.tvNama.text = item.nama
         holder.binding.tvHarga.text = "Rp${rupiahFormat.format(item.harga)}"
+        holder.binding.root.setOnClickListener { onItemClick(item) }
     }
 
     companion object {
