@@ -43,6 +43,12 @@ class DashboardViewModel(private val repo: Repository) : ViewModel() {
         }
     }
 
+    fun updateItem(item: com.tokoaksesoris.kasir.data.TransaksiItem, tipe: TipeTransaksi, nama: String, harga: Double) {
+        viewModelScope.launch {
+            repo.updateItem(item.copy(tipe = tipe, nama = nama, harga = harga))
+        }
+    }
+
     fun tutupHari() {
         viewModelScope.launch {
             openSession.value?.let { repo.tutupHari(it) }
