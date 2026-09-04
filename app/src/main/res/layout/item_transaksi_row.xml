@@ -43,4 +43,11 @@
         android:gravity="end"
         android:textSize="13sp"
         tools:text="Rp25.000" />
+
+    <ImageView
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginStart="6dp"
+        android:src="@drawable/ic_edit"
+        android:contentDescription="Edit item" />
 </LinearLayout>
