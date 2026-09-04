@@ -1,0 +1,56 @@
+package com.tokoaksesoris.kasir.ui.dashboard
+
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.switchMap
+import androidx.lifecycle.viewModelScope
+import com.tokoaksesoris.kasir.data.Repository
+import com.tokoaksesoris.kasir.data.Session
+import com.tokoaksesoris.kasir.data.TipeTransaksi
+import kotlinx.coroutines.launch
+
+class DashboardViewModel(private val repo: Repository) : ViewModel() {
+
+    val openSession: LiveData<Session?> = repo.observeOpenSession()
+
+    private val sessionIdLiveData = MediatorLiveData<Long?>().apply {
+        addSource(openSession) { value = it?.id }
+    }
+
+    val barangItems = sessionIdLiveData.switchMap { id ->
+        if (id == null) MutableLiveData(emptyList()) else repo.observeItems(id, TipeTransaksi.BARANG)
+    }
+
+    val pulsaItems = sessionIdLiveData.switchMap { id ->
+        if (id == null) MutableLiveData(emptyList()) else repo.observeItems(id, TipeTransaksi.PULSA)
+    }
+
+    val total = sessionIdLiveData.switchMap { id ->
+        if (id == null) MutableLiveData(0.0) else repo.observeTotal(id)
+    }
+
+    fun mulaiHariIni() {
+        viewModelScope.launch { repo.mulaiHariIni() }
+    }
+
+    fun tambahItem(tipe: TipeTransaksi, nama: String, harga: Double) {
+        viewModelScope.launch {
+            val session = openSession.value ?: repo.mulaiHariIni()
+            repo.tambahItem(session.id, tipe, nama, harga)
+        }
+    }
+
+    fun tutupHari() {
+        viewModelScope.launch {
+            openSession.value?.let { repo.tutupHari(it) }
+        }
+    }
+
+    class Factory(private val repo: Repository) : ViewModelProvider.Factory {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T = DashboardViewModel(repo) as T
+    }
+}
