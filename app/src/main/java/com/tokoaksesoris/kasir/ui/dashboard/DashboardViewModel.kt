@@ -11,6 +11,7 @@ import androidx.lifecycle.viewModelScope
 import com.tokoaksesoris.kasir.data.Repository
 import com.tokoaksesoris.kasir.data.Session
 import com.tokoaksesoris.kasir.data.TipeTransaksi
+import com.tokoaksesoris.kasir.data.TransaksiItem
 import kotlinx.coroutines.launch
 
 class DashboardViewModel(private val repo: Repository) : ViewModel() {
@@ -21,16 +22,19 @@ class DashboardViewModel(private val repo: Repository) : ViewModel() {
         addSource(openSession) { value = it?.id }
     }
 
-    val barangItems = sessionIdLiveData.switchMap { id ->
-        if (id == null) MutableLiveData(emptyList()) else repo.observeItems(id, TipeTransaksi.BARANG)
+    val barangItems: LiveData<List<TransaksiItem>> = sessionIdLiveData.switchMap { id ->
+        if (id == null) MutableLiveData<List<TransaksiItem>>(emptyList())
+        else repo.observeItems(id, TipeTransaksi.BARANG)
     }
 
-    val pulsaItems = sessionIdLiveData.switchMap { id ->
-        if (id == null) MutableLiveData(emptyList()) else repo.observeItems(id, TipeTransaksi.PULSA)
+    val pulsaItems: LiveData<List<TransaksiItem>> = sessionIdLiveData.switchMap { id ->
+        if (id == null) MutableLiveData<List<TransaksiItem>>(emptyList())
+        else repo.observeItems(id, TipeTransaksi.PULSA)
     }
 
-    val total = sessionIdLiveData.switchMap { id ->
-        if (id == null) MutableLiveData(0.0) else repo.observeTotal(id)
+    val total: LiveData<Double> = sessionIdLiveData.switchMap { id ->
+        if (id == null) MutableLiveData<Double>(0.0)
+        else repo.observeTotal(id)
     }
 
     // Subtotal per tabel (dihitung dari list yang sudah observed, tanpa query tambahan)
@@ -48,7 +52,7 @@ class DashboardViewModel(private val repo: Repository) : ViewModel() {
         }
     }
 
-    fun updateItem(item: com.tokoaksesoris.kasir.data.TransaksiItem, tipe: TipeTransaksi, nama: String, harga: Double) {
+    fun updateItem(item: TransaksiItem, tipe: TipeTransaksi, nama: String, harga: Double) {
         viewModelScope.launch {
             repo.updateItem(item.copy(tipe = tipe, nama = nama, harga = harga))
         }
