@@ -5,6 +5,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.map
 import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import com.tokoaksesoris.kasir.data.Repository
@@ -31,6 +32,10 @@ class DashboardViewModel(private val repo: Repository) : ViewModel() {
     val total = sessionIdLiveData.switchMap { id ->
         if (id == null) MutableLiveData(0.0) else repo.observeTotal(id)
     }
+
+    // Subtotal per tabel (dihitung dari list yang sudah observed, tanpa query tambahan)
+    val totalBarang: LiveData<Double> = barangItems.map { list -> list.sumOf { it.harga } }
+    val totalPulsa: LiveData<Double> = pulsaItems.map { list -> list.sumOf { it.harga } }
 
     fun mulaiHariIni() {
         viewModelScope.launch { repo.mulaiHariIni() }
