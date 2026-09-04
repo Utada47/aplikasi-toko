@@ -89,6 +89,13 @@ class DashboardFragment : Fragment() {
         viewModel.barangItems.observe(viewLifecycleOwner) { adapterBarang.submitList(it) }
         viewModel.pulsaItems.observe(viewLifecycleOwner) { adapterPulsa.submitList(it) }
 
+        viewModel.totalBarang.observe(viewLifecycleOwner) { subtotal ->
+            binding.tvSubtotalBarang.text = "Rp${rupiahFormat.format(subtotal)}"
+        }
+        viewModel.totalPulsa.observe(viewLifecycleOwner) { subtotal ->
+            binding.tvSubtotalPulsa.text = "Rp${rupiahFormat.format(subtotal)}"
+        }
+
         viewModel.total.observe(viewLifecycleOwner) { total ->
             binding.tvTotal.text = "Rp${rupiahFormat.format(total)}"
         }
