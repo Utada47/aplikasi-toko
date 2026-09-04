@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.KasirAksesoris" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/brand_primary</item>
+        <item name="colorPrimaryDark">@color/brand_primary_dark</item>
+        <item name="colorSecondary">@color/brand_accent</item>
+        <item name="android:colorBackground">@color/light_background</item>
+        <item name="colorSurface">@color/light_surface</item>
+        <item name="colorSurfaceVariant">@color/light_surface_variant</item>
+        <item name="colorOnSurface">@color/light_on_surface</item>
+        <item name="android:statusBarColor">@color/light_background</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+</resources>
