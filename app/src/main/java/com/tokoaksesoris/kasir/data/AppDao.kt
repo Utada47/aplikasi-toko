@@ -32,6 +32,9 @@ interface AppDao {
     @Insert
     suspend fun insertTransaksi(item: TransaksiItem): Long
 
+    @Update
+    suspend fun updateTransaksi(item: TransaksiItem)
+
     @Query("SELECT * FROM transaksi_items WHERE sessionId = :sessionId AND tipe = :tipe ORDER BY waktu ASC")
     fun observeItemsBySessionAndTipe(sessionId: Long, tipe: TipeTransaksi): LiveData<List<TransaksiItem>>
 
