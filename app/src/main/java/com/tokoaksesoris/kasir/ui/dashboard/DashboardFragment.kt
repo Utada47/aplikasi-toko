@@ -11,6 +11,7 @@ import android.widget.PopupMenu
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.tokoaksesoris.kasir.MainActivity
 import com.tokoaksesoris.kasir.R
+import com.tokoaksesoris.kasir.data.TransaksiItem
 import com.tokoaksesoris.kasir.databinding.FragmentDashboardBinding
 import com.tokoaksesoris.kasir.utils.ThemeHelper
 import java.text.NumberFormat
@@ -101,7 +102,7 @@ class DashboardFragment : Fragment() {
         }
     }
 
-    private fun bukaDialogEdit(item: com.tokoaksesoris.kasir.data.TransaksiItem) {
+    private fun bukaDialogEdit(item: TransaksiItem) {
         AddItemDialogFragment(itemToEdit = item) { tipe, nama, harga ->
             viewModel.updateItem(item, tipe, nama, harga)
         }.show(childFragmentManager, "edit_item")
