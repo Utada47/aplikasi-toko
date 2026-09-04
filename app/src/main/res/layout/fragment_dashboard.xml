@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Top bar -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingBottom="12dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Kasir Aksesoris"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/btnToggleTheme"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Ganti tema"
+                    android:src="@drawable/ic_theme_toggle" />
+            </LinearLayout>
+
+            <!-- Tombol mulai hari (kondisi belum ada sesi terbuka) -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnMulaiHariIni"
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:layout_marginTop="24dp"
+                android:text="Mulai Buka Hari Ini"
+                android:textSize="18sp"
+                app:cornerRadius="16dp" />
+
+            <!-- Konten saat sesi sedang berjalan -->
+            <LinearLayout
+                android:id="@+id/groupSesiAktif"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnTutupHari"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Tutup Hari" />
+
+                <!-- Tabel Barang -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Barang"
+                    android:textStyle="bold"
+                    android:textSize="16sp" />
+
+                <include layout="@layout/row_table_header" android:id="@+id/headerBarang" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvBarang"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="220dp"
+                    android:nestedScrollingEnabled="false"
+                    tools:listitem="@layout/item_transaksi_row" />
+
+                <!-- Tabel Transaksi/Pulsa -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Transaksi / Pulsa"
+                    android:textStyle="bold"
+                    android:textSize="16sp" />
+
+                <include layout="@layout/row_table_header" android:id="@+id/headerPulsa" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvPulsa"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="220dp"
+                    android:nestedScrollingEnabled="false"
+                    tools:listitem="@layout/item_transaksi_row" />
+
+                <!-- Total -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="20dp"
+                    android:paddingVertical="12dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Total Pemasukan"
+                        android:textStyle="bold"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tvTotal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        tools:text="Rp150.000" />
+                </LinearLayout>
+
+                <!-- ruang kosong supaya tidak ketutup FAB -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabTambah"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="20dp"
+        android:contentDescription="Tambah item"
+        android:src="@drawable/ic_add"
+        android:visibility="gone"
+        tools:visibility="visible" />
+</FrameLayout>
