@@ -95,6 +95,30 @@
                     android:nestedScrollingEnabled="false"
                     tools:listitem="@layout/item_transaksi_row" />
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="6dp"
+                    android:paddingHorizontal="8dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Subtotal Barang"
+                        android:textSize="13sp"
+                        android:textStyle="italic" />
+
+                    <TextView
+                        android:id="@+id/tvSubtotalBarang"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        tools:text="Rp80.000" />
+                </LinearLayout>
+
                 <!-- Tabel Transaksi/Pulsa -->
                 <TextView
                     android:layout_width="match_parent"
@@ -113,6 +137,30 @@
                     android:minHeight="220dp"
                     android:nestedScrollingEnabled="false"
                     tools:listitem="@layout/item_transaksi_row" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="6dp"
+                    android:paddingHorizontal="8dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Subtotal Transaksi/Pulsa"
+                        android:textSize="13sp"
+                        android:textStyle="italic" />
+
+                    <TextView
+                        android:id="@+id/tvSubtotalPulsa"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        tools:text="Rp70.000" />
+                </LinearLayout>
 
                 <!-- ruang kosong supaya baris terakhir tabel tidak ketutup FAB tambah -->
                 <View
