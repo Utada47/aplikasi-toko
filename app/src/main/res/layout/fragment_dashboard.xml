@@ -137,10 +137,10 @@
                         tools:text="Rp150.000" />
                 </LinearLayout>
 
-                <!-- ruang kosong supaya tidak ketutup FAB -->
+                <!-- ruang kosong supaya tidak ketutup FAB tambah -->
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="80dp" />
+                    android:layout_height="100dp" />
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
