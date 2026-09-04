@@ -32,6 +32,14 @@
                     android:textStyle="bold" />
 
                 <ImageButton
+                    android:id="@+id/btnMenuLainnya"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Menu lainnya (import/export)"
+                    android:src="@drawable/ic_more" />
+
+                <ImageButton
                     android:id="@+id/btnToggleTheme"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
