@@ -24,6 +24,10 @@ class Repository(private val dao: AppDao) {
         )
     }
 
+    suspend fun updateItem(item: TransaksiItem) {
+        dao.updateTransaksi(item)
+    }
+
     fun observeItems(sessionId: Long, tipe: TipeTransaksi) = dao.observeItemsBySessionAndTipe(sessionId, tipe)
 
     fun observeTotal(sessionId: Long) = dao.observeTotalBySession(sessionId)
