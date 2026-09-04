@@ -7,7 +7,9 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingTop="64dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -112,38 +114,44 @@
                     android:nestedScrollingEnabled="false"
                     tools:listitem="@layout/item_transaksi_row" />
 
-                <!-- Total -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="20dp"
-                    android:paddingVertical="12dp">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Total Pemasukan"
-                        android:textStyle="bold"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:id="@+id/tvTotal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:textSize="16sp"
-                        tools:text="Rp150.000" />
-                </LinearLayout>
-
-                <!-- ruang kosong supaya tidak ketutup FAB tambah -->
+                <!-- ruang kosong supaya baris terakhir tabel tidak ketutup FAB tambah -->
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="100dp" />
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <!-- Bar Total Pemasukan: TETAP di paling atas layar, tidak ikut ter-scroll -->
+    <LinearLayout
+        android:id="@+id/barTotalTetap"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_gravity="top"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp"
+        android:background="?attr/colorSurface"
+        android:elevation="4dp"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Total Pemasukan"
+            android:textStyle="bold"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tvTotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            tools:text="Rp150.000" />
+    </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabTambah"
