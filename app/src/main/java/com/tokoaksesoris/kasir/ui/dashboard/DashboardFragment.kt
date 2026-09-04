@@ -83,6 +83,7 @@ class DashboardFragment : Fragment() {
             binding.btnMulaiHariIni.visibility = if (adaSesi) View.GONE else View.VISIBLE
             binding.groupSesiAktif.visibility = if (adaSesi) View.VISIBLE else View.GONE
             binding.fabTambah.visibility = if (adaSesi) View.VISIBLE else View.GONE
+            binding.barTotalTetap.visibility = if (adaSesi) View.VISIBLE else View.GONE
         }
 
         viewModel.barangItems.observe(viewLifecycleOwner) { adapterBarang.submitList(it) }
