@@ -7,8 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import android.widget.PopupMenu
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.tokoaksesoris.kasir.MainActivity
+import com.tokoaksesoris.kasir.R
 import com.tokoaksesoris.kasir.databinding.FragmentDashboardBinding
 import com.tokoaksesoris.kasir.utils.ThemeHelper
 import java.text.NumberFormat
@@ -47,6 +49,19 @@ class DashboardFragment : Fragment() {
 
         binding.btnToggleTheme.setOnClickListener {
             ThemeHelper.toggleTheme(requireContext())
+        }
+
+        binding.btnMenuLainnya.setOnClickListener { anchor ->
+            val popup = PopupMenu(requireContext(), anchor)
+            popup.menuInflater.inflate(R.menu.main_menu, popup.menu)
+            popup.setOnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    R.id.menu_export_csv -> { (requireActivity() as MainActivity).mulaiExportCsv(); true }
+                    R.id.menu_import_csv -> { (requireActivity() as MainActivity).mulaiImportCsv(); true }
+                    else -> false
+                }
+            }
+            popup.show()
         }
 
         binding.btnMulaiHariIni.setOnClickListener {
