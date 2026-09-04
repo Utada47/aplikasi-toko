@@ -1,0 +1,26 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Badan HP -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M46,27 H62 Q69,27 69,34 V74 Q69,81 62,81 H46 Q39,81 39,74 V34 Q39,27 46,27 Z" />
+
+    <!-- Layar HP (warna gelap supaya kontras) -->
+    <path
+        android:fillColor="#14352D"
+        android:pathData="M46,33 H62 Q66,33 66,37 V71 Q66,75 62,75 H46 Q42,75 42,71 V37 Q42,33 46,33 Z" />
+
+    <!-- Lubang kamera -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M52.5,29.5 m-1.4,0 a1.4,1.4 0,1 1,2.8 0 a1.4,1.4 0,1 1,-2.8 0z" />
+
+    <!-- Petir (simbol charging / aksesoris) -->
+    <path
+        android:fillColor="#F2A65A"
+        android:pathData="M58,40 L47,59 L53,59 L51,69 L65,51 L57,51 Z" />
+</vector>
