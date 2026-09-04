@@ -40,8 +40,8 @@ class DashboardFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapterBarang = TransaksiAdapter()
-        adapterPulsa = TransaksiAdapter()
+        adapterBarang = TransaksiAdapter { item -> bukaDialogEdit(item) }
+        adapterPulsa = TransaksiAdapter { item -> bukaDialogEdit(item) }
         binding.rvBarang.layoutManager = LinearLayoutManager(requireContext())
         binding.rvBarang.adapter = adapterBarang
         binding.rvPulsa.layoutManager = LinearLayoutManager(requireContext())
@@ -73,7 +73,7 @@ class DashboardFragment : Fragment() {
         }
 
         binding.fabTambah.setOnClickListener {
-            AddItemDialogFragment { tipe, nama, harga ->
+            AddItemDialogFragment(itemToEdit = null) { tipe, nama, harga ->
                 viewModel.tambahItem(tipe, nama, harga)
             }.show(childFragmentManager, "add_item")
         }
@@ -92,6 +92,12 @@ class DashboardFragment : Fragment() {
         viewModel.total.observe(viewLifecycleOwner) { total ->
             binding.tvTotal.text = "Rp${rupiahFormat.format(total)}"
         }
+    }
+
+    private fun bukaDialogEdit(item: com.tokoaksesoris.kasir.data.TransaksiItem) {
+        AddItemDialogFragment(itemToEdit = item) { tipe, nama, harga ->
+            viewModel.updateItem(item, tipe, nama, harga)
+        }.show(childFragmentManager, "edit_item")
     }
 
     private fun konfirmasiTutupHari() {
