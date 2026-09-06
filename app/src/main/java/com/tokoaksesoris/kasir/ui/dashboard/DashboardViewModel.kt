@@ -58,6 +58,14 @@ class DashboardViewModel(private val repo: Repository) : ViewModel() {
         }
     }
 
+    fun hapusItem(item: TransaksiItem) {
+        viewModelScope.launch { repo.hapusItem(item) }
+    }
+
+    fun undoHapus(item: TransaksiItem) {
+        viewModelScope.launch { repo.kembalikanItem(item) }
+    }
+
     fun tutupHari() {
         viewModelScope.launch {
             openSession.value?.let { repo.tutupHari(it) }
