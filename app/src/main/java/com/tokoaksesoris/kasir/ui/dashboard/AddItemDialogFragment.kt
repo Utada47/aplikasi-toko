@@ -2,16 +2,20 @@ package com.tokoaksesoris.kasir.ui.dashboard
 
 import android.app.Dialog
 import android.os.Bundle
+import android.widget.ArrayAdapter
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.tokoaksesoris.kasir.MainActivity
 import com.tokoaksesoris.kasir.data.TipeTransaksi
 import com.tokoaksesoris.kasir.data.TransaksiItem
 import com.tokoaksesoris.kasir.databinding.DialogAddItemBinding
+import kotlinx.coroutines.launch
 
 /**
  * Modal tambah/edit item. Saat radio button diganti (Barang <-> Transaksi/Pulsa),
- * isi input (nama & harga) TIDAK direset -- hanya label hint yang berubah,
- * sesuai permintaan supaya user tidak perlu mengetik ulang.
+ * isi input (nama & harga) TIDAK direset -- hanya label hint & saran autocomplete
+ * yang berubah, sesuai permintaan supaya user tidak perlu mengetik ulang.
  *
  * Jika [itemToEdit] diisi, dialog otomatis terisi data lama (mode edit).
  * Jika null, dialog kosong (mode tambah item baru).
@@ -41,9 +45,12 @@ class AddItemDialogFragment(
             }
         }
 
+        muatSaranNama(tipeTerpilih())
+
         binding.radioGroupTipe.setOnCheckedChangeListener { _, checkedId ->
             val label = if (checkedId == binding.radioBarang.id) "Nama Barang" else "Nama Transaksi/Pulsa"
             binding.tilNama.hint = label
+            muatSaranNama(tipeTerpilih())
             // catatan: etNama & etHarga TIDAK di-clear, sesuai spesifikasi
         }
 
@@ -61,16 +68,27 @@ class AddItemDialogFragment(
                 return@setOnClickListener
             }
 
-            val tipe = if (binding.radioGroupTipe.checkedRadioButtonId == binding.radioBarang.id)
-                TipeTransaksi.BARANG else TipeTransaksi.PULSA
-
-            onSimpan(tipe, nama, harga)
+            onSimpan(tipeTerpilih(), nama, harga)
             dismiss()
         }
 
         return MaterialAlertDialogBuilder(requireContext())
             .setView(binding.root)
             .create()
+    }
+
+    private fun tipeTerpilih(): TipeTransaksi =
+        if (binding.radioGroupTipe.checkedRadioButtonId == binding.radioBarang.id)
+            TipeTransaksi.BARANG else TipeTransaksi.PULSA
+
+    private fun muatSaranNama(tipe: TipeTransaksi) {
+        val repo = (requireActivity() as MainActivity).repository
+        lifecycleScope.launch {
+            val saran = repo.getSaranNama(tipe)
+            if (_binding == null) return@launch // dialog mungkin sudah ditutup
+            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, saran)
+            binding.etNama.setAdapter(adapter)
+        }
     }
 
     override fun onDestroyView() {
