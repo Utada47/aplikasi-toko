@@ -50,8 +50,10 @@ class StatistikFragment : Fragment() {
                 binding.btnModeTahunan.id -> ModeTampilan.TAHUNAN
                 else -> ModeTampilan.HARIAN
             }
-            // Filter rentang waktu (7/30/Semua) cuma relevan untuk mode Harian
-            binding.toggleRentang.visibility = if (modePilihan == ModeTampilan.HARIAN) View.VISIBLE else View.GONE
+            val (labelKecil, labelBesar) = viewModel.labelRentangUntukMode(modePilihan)
+            binding.btnRentangKecil.text = labelKecil
+            binding.btnRentangBesar.text = labelBesar
+            binding.toggleRentang.check(binding.btnRentangKecil.id) // reset ke opsi pertama tiap ganti mode
             binding.tvLabelRiwayat.text = when (modePilihan) {
                 ModeTampilan.HARIAN -> "RIWAYAT HARIAN"
                 ModeTampilan.BULANAN -> "RIWAYAT BULANAN"
@@ -60,15 +62,15 @@ class StatistikFragment : Fragment() {
             viewModel.setMode(modePilihan)
         }
 
-        binding.toggleRentang.check(binding.btnRentang7Hari.id)
+        binding.toggleRentang.check(binding.btnRentangKecil.id)
         binding.toggleRentang.addOnButtonCheckedListener { _, checkedId, isChecked ->
             if (!isChecked) return@addOnButtonCheckedListener
-            val rentang = when (checkedId) {
-                binding.btnRentang30Hari.id -> RentangWaktu.TIGA_PULUH_HARI
-                binding.btnRentangSemua.id -> RentangWaktu.SEMUA
-                else -> RentangWaktu.TUJUH_HARI
+            val index = when (checkedId) {
+                binding.btnRentangBesar.id -> 1
+                binding.btnRentangSemua.id -> 2
+                else -> 0
             }
-            viewModel.setRentang(rentang)
+            viewModel.setRentangIndex(index)
         }
 
         viewModel.data.observe(viewLifecycleOwner) { list ->
