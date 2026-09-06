@@ -23,9 +23,6 @@ class StatistikViewModel(private val repo: Repository) : ViewModel() {
     private val _insight = MutableLiveData<RingkasanInsight>()
     val insight: LiveData<RingkasanInsight> = _insight
 
-    private val _barangTerlaris = MutableLiveData<List<BarangTerlaris>>(emptyList())
-    val barangTerlaris: LiveData<List<BarangTerlaris>> = _barangTerlaris
-
     private val _chartData = MutableLiveData<List<Pair<String, Double>>>(emptyList())
     val chartData: LiveData<List<Pair<String, Double>>> = _chartData
 
@@ -109,7 +106,7 @@ class StatistikViewModel(private val repo: Repository) : ViewModel() {
             }
             _insight.postValue(RingkasanInsight(totalHariIni, totalKemarin, totalTujuhHari / 7.0))
 
-            // ---- Barang terlaris: berdasarkan filter rentang waktu (7/30/Semua), independen dari mode tampilan ----
+            // ---- Filter rentang waktu (7/30/Semua) -- dipakai untuk daftar mode Harian ----
             val rentangSekarang = _rentang.value ?: RentangWaktu.TUJUH_HARI
             val batasHari = rentangSekarang.jumlahHari
             val perTanggalTerfilter = if (batasHari == null) {
@@ -124,16 +121,6 @@ class StatistikViewModel(private val repo: Repository) : ViewModel() {
                     perTanggalSemua.forEach { (key, list) -> if (list.first().tanggalMulai >= cutoff) put(key, list) }
                 }
             }
-            val sessionIdsTerfilter = perTanggalTerfilter.values.flatten().map { it.id }.toSet()
-            val itemsTerfilter = allItems.filter { it.sessionId in sessionIdsTerfilter }
-            val terlaris = itemsTerfilter
-                .groupBy { it.nama to it.tipe }
-                .map { (key, items) ->
-                    BarangTerlaris(nama = key.first, tipe = key.second, jumlahTerjual = items.size, totalPendapatan = items.sumOf { it.harga })
-                }
-                .sortedByDescending { it.totalPendapatan }
-                .take(10)
-            _barangTerlaris.postValue(terlaris)
 
             // ---- Bangun daftar ringkasan sesuai MODE tampilan (Harian / Bulanan / Tahunan) ----
             val modeSekarang = _mode.value ?: ModeTampilan.HARIAN

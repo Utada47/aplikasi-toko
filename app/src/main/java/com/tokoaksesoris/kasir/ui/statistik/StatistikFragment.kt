@@ -26,7 +26,6 @@ class StatistikFragment : Fragment() {
         val judulKustom = if (modeSekarang == ModeTampilan.HARIAN) null else item.label
         DetailHarianActivity.start(requireContext(), item.sessionIds, item.representativeTimestamp, judulKustom)
     }
-    private val adapterTerlaris = BarangTerlarisAdapter()
 
     private val rupiahFormat = NumberFormat.getNumberInstance(Locale("in", "ID"))
 
@@ -42,9 +41,6 @@ class StatistikFragment : Fragment() {
 
         binding.rvStatistik.layoutManager = LinearLayoutManager(requireContext())
         binding.rvStatistik.adapter = adapterHarian
-
-        binding.rvBarangTerlaris.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvBarangTerlaris.adapter = adapterTerlaris
 
         binding.toggleMode.check(binding.btnModeHarian.id)
         binding.toggleMode.addOnButtonCheckedListener { _, checkedId, isChecked ->
@@ -88,12 +84,6 @@ class StatistikFragment : Fragment() {
 
         viewModel.chartData.observe(viewLifecycleOwner) { entries ->
             binding.barChart.setData(entries)
-        }
-
-        viewModel.barangTerlaris.observe(viewLifecycleOwner) { list ->
-            adapterTerlaris.submitList(list)
-            binding.tvKosongTerlaris.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
-            binding.rvBarangTerlaris.visibility = if (list.isEmpty()) View.GONE else View.VISIBLE
         }
 
         viewModel.muatUlang()

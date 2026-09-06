@@ -208,46 +208,6 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
-        <!-- Barang terlaris -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="6dp"
-            android:paddingStart="8dp"
-            android:text="BARANG TERLARIS"
-            android:textAllCaps="true"
-            android:textSize="12sp"
-            android:textColor="?attr/colorOnSurfaceVariant"
-            android:letterSpacing="0.05" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/bg_card_rounded"
-            android:paddingVertical="4dp">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvBarangTerlaris"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
-                tools:listitem="@layout/item_barang_terlaris_row" />
-
-            <TextView
-                android:id="@+id/tvKosongTerlaris"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:gravity="center"
-                android:text="Belum ada data penjualan"
-                android:textSize="13sp"
-                android:textColor="?attr/colorOnSurfaceVariant"
-                android:visibility="gone"
-                tools:visibility="visible" />
-        </LinearLayout>
-
         <!-- Riwayat (label berubah sesuai mode) -->
         <TextView
             android:id="@+id/tvLabelRiwayat"
