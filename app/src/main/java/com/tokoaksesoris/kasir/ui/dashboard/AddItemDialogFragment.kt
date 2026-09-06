@@ -6,7 +6,7 @@ import android.widget.ArrayAdapter
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.tokoaksesoris.kasir.MainActivity
+import com.tokoaksesoris.kasir.data.Repository
 import com.tokoaksesoris.kasir.data.TipeTransaksi
 import com.tokoaksesoris.kasir.data.TransaksiItem
 import com.tokoaksesoris.kasir.databinding.DialogAddItemBinding
@@ -19,8 +19,12 @@ import kotlinx.coroutines.launch
  *
  * Jika [itemToEdit] diisi, dialog otomatis terisi data lama (mode edit).
  * Jika null, dialog kosong (mode tambah item baru).
+ *
+ * [repository] di-pass langsung (bukan diambil dari activity) supaya dialog ini
+ * bisa dipakai dari Activity mana pun -- Dashboard maupun DetailHarianActivity.
  */
 class AddItemDialogFragment(
+    private val repository: Repository,
     private val itemToEdit: TransaksiItem? = null,
     private val onSimpan: (tipe: TipeTransaksi, nama: String, harga: Double) -> Unit
 ) : DialogFragment() {
@@ -82,9 +86,8 @@ class AddItemDialogFragment(
             TipeTransaksi.BARANG else TipeTransaksi.PULSA
 
     private fun muatSaranNama(tipe: TipeTransaksi) {
-        val repo = (requireActivity() as MainActivity).repository
         lifecycleScope.launch {
-            val saran = repo.getSaranNama(tipe)
+            val saran = repository.getSaranNama(tipe)
             if (_binding == null) return@launch // dialog mungkin sudah ditutup
             val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, saran)
             binding.etNama.setAdapter(adapter)
