@@ -2,6 +2,7 @@ package com.tokoaksesoris.kasir.data
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
@@ -34,6 +35,12 @@ interface AppDao {
 
     @Update
     suspend fun updateTransaksi(item: TransaksiItem)
+
+    @Delete
+    suspend fun deleteTransaksi(item: TransaksiItem)
+
+    @Query("SELECT DISTINCT nama FROM transaksi_items WHERE tipe = :tipe ORDER BY nama ASC")
+    suspend fun getNamaSuggestions(tipe: TipeTransaksi): List<String>
 
     @Query("SELECT * FROM transaksi_items WHERE sessionId = :sessionId AND tipe = :tipe ORDER BY waktu ASC")
     fun observeItemsBySessionAndTipe(sessionId: Long, tipe: TipeTransaksi): LiveData<List<TransaksiItem>>
