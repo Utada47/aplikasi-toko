@@ -1,14 +1,21 @@
 package com.tokoaksesoris.kasir.ui.dashboard
 
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.widget.PopupMenu
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.tokoaksesoris.kasir.MainActivity
 import com.tokoaksesoris.kasir.R
 import com.tokoaksesoris.kasir.data.TransaksiItem
@@ -16,6 +23,7 @@ import com.tokoaksesoris.kasir.databinding.FragmentDashboardBinding
 import com.tokoaksesoris.kasir.utils.ThemeHelper
 import java.text.NumberFormat
 import java.util.Locale
+import kotlin.math.min
 
 class DashboardFragment : Fragment() {
 
@@ -47,6 +55,9 @@ class DashboardFragment : Fragment() {
         binding.rvBarang.adapter = adapterBarang
         binding.rvPulsa.layoutManager = LinearLayoutManager(requireContext())
         binding.rvPulsa.adapter = adapterPulsa
+
+        pasangSwipeToDelete(binding.rvBarang, adapterBarang)
+        pasangSwipeToDelete(binding.rvPulsa, adapterPulsa)
 
         binding.btnToggleTheme.setOnClickListener {
             ThemeHelper.toggleTheme(requireContext())
@@ -100,6 +111,54 @@ class DashboardFragment : Fragment() {
         viewModel.total.observe(viewLifecycleOwner) { total ->
             binding.tvTotal.text = "Rp${rupiahFormat.format(total)}"
         }
+    }
+
+    /**
+     * Pasang gesture swipe (geser kiri) pada RecyclerView untuk menghapus item,
+     * dengan latar merah + ikon tempat sampah, dan Snackbar "Undo" supaya bisa dibatalkan.
+     */
+    private fun pasangSwipeToDelete(recyclerView: RecyclerView, adapter: TransaksiAdapter) {
+        val background = ColorDrawable(Color.parseColor("#FF3B30")) // iOS system red
+        val ikonHapus = ContextCompat.getDrawable(requireContext(), R.drawable.ic_delete)
+
+        val callback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            override fun onMove(rv: RecyclerView, vh: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder) = false
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.bindingAdapterPosition
+                if (position == RecyclerView.NO_POSITION) return
+                val item = adapter.currentList[position]
+                viewModel.hapusItem(item)
+
+                Snackbar.make(binding.root, "Item \"${item.nama}\" dihapus", Snackbar.LENGTH_LONG)
+                    .setAction("Undo") { viewModel.undoHapus(item) }
+                    .show()
+            }
+
+            override fun onChildDraw(
+                c: Canvas, rv: RecyclerView, viewHolder: RecyclerView.ViewHolder,
+                dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean
+            ) {
+                val itemView = viewHolder.itemView
+                if (dX < 0) {
+                    background.setBounds(itemView.right + dX.toInt(), itemView.top, itemView.right, itemView.bottom)
+                    background.draw(c)
+
+                    ikonHapus?.let {
+                        val iconMargin = (itemView.height - it.intrinsicHeight) / 2
+                        val iconTop = itemView.top + iconMargin
+                        val iconBottom = iconTop + it.intrinsicHeight
+                        val iconLeft = min(itemView.right - iconMargin - it.intrinsicWidth, itemView.right - 16)
+                        val iconRight = itemView.right - iconMargin
+                        it.setBounds(iconLeft, iconTop, iconRight, iconBottom)
+                        it.draw(c)
+                    }
+                }
+                super.onChildDraw(c, rv, viewHolder, dX, dY, actionState, isCurrentlyActive)
+            }
+        }
+
+        ItemTouchHelper(callback).attachToRecyclerView(recyclerView)
     }
 
     private fun bukaDialogEdit(item: TransaksiItem) {
