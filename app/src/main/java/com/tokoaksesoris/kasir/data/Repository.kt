@@ -28,6 +28,17 @@ class Repository(private val dao: AppDao) {
         dao.updateTransaksi(item)
     }
 
+    suspend fun hapusItem(item: TransaksiItem) {
+        dao.deleteTransaksi(item)
+    }
+
+    /** Undo hapus: masukkan kembali item yang sama (id baru, waktu asli tetap dipertahankan). */
+    suspend fun kembalikanItem(item: TransaksiItem) {
+        dao.insertTransaksi(item.copy(id = 0))
+    }
+
+    suspend fun getSaranNama(tipe: TipeTransaksi): List<String> = dao.getNamaSuggestions(tipe)
+
     fun observeItems(sessionId: Long, tipe: TipeTransaksi) = dao.observeItemsBySessionAndTipe(sessionId, tipe)
 
     fun observeTotal(sessionId: Long) = dao.observeTotalBySession(sessionId)
