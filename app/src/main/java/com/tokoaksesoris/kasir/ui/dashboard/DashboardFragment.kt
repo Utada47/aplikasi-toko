@@ -85,7 +85,7 @@ class DashboardFragment : Fragment() {
         }
 
         binding.fabTambah.setOnClickListener {
-            AddItemDialogFragment(itemToEdit = null) { tipe, nama, harga ->
+            AddItemDialogFragment(repository = (requireActivity() as MainActivity).repository, itemToEdit = null) { tipe, nama, harga ->
                 viewModel.tambahItem(tipe, nama, harga)
             }.show(childFragmentManager, "add_item")
         }
@@ -162,7 +162,8 @@ class DashboardFragment : Fragment() {
     }
 
     private fun bukaDialogEdit(item: TransaksiItem) {
-        AddItemDialogFragment(itemToEdit = item) { tipe, nama, harga ->
+        val repo = (requireActivity() as MainActivity).repository
+        AddItemDialogFragment(repository = repo, itemToEdit = item) { tipe, nama, harga ->
             viewModel.updateItem(item, tipe, nama, harga)
         }.show(childFragmentManager, "edit_item")
     }
