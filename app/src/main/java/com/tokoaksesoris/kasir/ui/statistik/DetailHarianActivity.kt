@@ -41,8 +41,13 @@ class DetailHarianActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         sessionIds = intent.getLongArrayExtra(EXTRA_SESSION_IDS)?.toList().orEmpty()
-        val tanggalMulai = intent.getLongExtra(EXTRA_TANGGAL_MULAI, System.currentTimeMillis())
-        binding.tvTanggalDetail.text = tanggalFormat.format(Date(tanggalMulai))
+        val judulKustom = intent.getStringExtra(EXTRA_JUDUL_KUSTOM)
+        if (judulKustom != null) {
+            binding.tvTanggalDetail.text = judulKustom
+        } else {
+            val tanggalMulai = intent.getLongExtra(EXTRA_TANGGAL_MULAI, System.currentTimeMillis())
+            binding.tvTanggalDetail.text = tanggalFormat.format(Date(tanggalMulai))
+        }
 
         binding.btnKembali.setOnClickListener { finish() }
 
@@ -89,11 +94,13 @@ class DetailHarianActivity : AppCompatActivity() {
     companion object {
         private const val EXTRA_SESSION_IDS = "extra_session_ids"
         private const val EXTRA_TANGGAL_MULAI = "extra_tanggal_mulai"
+        private const val EXTRA_JUDUL_KUSTOM = "extra_judul_kustom"
 
-        fun start(context: Context, sessionIds: List<Long>, tanggalMulai: Long) {
+        fun start(context: Context, sessionIds: List<Long>, tanggalMulai: Long, judulKustom: String? = null) {
             val intent = Intent(context, DetailHarianActivity::class.java)
             intent.putExtra(EXTRA_SESSION_IDS, sessionIds.toLongArray())
             intent.putExtra(EXTRA_TANGGAL_MULAI, tanggalMulai)
+            if (judulKustom != null) intent.putExtra(EXTRA_JUDUL_KUSTOM, judulKustom)
             context.startActivity(intent)
         }
     }
