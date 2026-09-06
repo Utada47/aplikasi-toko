@@ -4,31 +4,27 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:layout_marginBottom="10dp"
     android:padding="16dp"
-    android:background="?attr/selectableItemBackground">
-
-    <TextView
-        android:id="@+id/tvTanggal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="14sp"
-        tools:text="Kamis, 4 September 2026" />
+    android:background="@drawable/bg_card_rounded"
+    android:foreground="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="4dp">
+        android:gravity="center_vertical">
 
         <TextView
-            android:id="@+id/tvJumlahItem"
+            android:id="@+id/tvTanggal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="12sp"
-            android:textColor="?attr/colorOnSurfaceVariant"
-            tools:text="8 item · Selesai" />
+            android:textStyle="bold"
+            android:textSize="14sp"
+            tools:text="Kamis, 4 September 2026" />
 
         <TextView
             android:id="@+id/tvTotalHarian"
@@ -36,6 +32,93 @@
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textSize="15sp"
+            android:textColor="@color/ios_blue"
             tools:text="Rp250.000" />
+
+        <ImageView
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_marginStart="4dp"
+            android:src="@drawable/ic_chevron_right"
+            android:contentDescription="Lihat detail" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:textSize="12sp"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        tools:text="Selesai" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginVertical="8dp"
+        android:background="?attr/colorSurfaceVariant" />
+
+    <!-- Rincian subtotal Barang -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingVertical="2dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Barang"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tvJumlahBarang"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:paddingEnd="8dp"
+            tools:text="5 item" />
+
+        <TextView
+            android:id="@+id/tvSubtotalBarangHarian"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            tools:text="Rp150.000" />
+    </LinearLayout>
+
+    <!-- Rincian subtotal Transaksi/Pulsa -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingVertical="2dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Transaksi / Pulsa"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tvJumlahPulsa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:paddingEnd="8dp"
+            tools:text="3 item" />
+
+        <TextView
+            android:id="@+id/tvSubtotalPulsaHarian"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            tools:text="Rp100.000" />
     </LinearLayout>
 </LinearLayout>
