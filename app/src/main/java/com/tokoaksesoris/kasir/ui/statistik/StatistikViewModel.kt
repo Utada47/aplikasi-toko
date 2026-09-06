@@ -26,11 +26,16 @@ class StatistikViewModel(private val repo: Repository) : ViewModel() {
     private val _chartData = MutableLiveData<List<Pair<String, Double>>>(emptyList())
     val chartData: LiveData<List<Pair<String, Double>>> = _chartData
 
-    private val _rentang = MutableLiveData(RentangWaktu.TUJUH_HARI)
-    val rentang: LiveData<RentangWaktu> = _rentang
-
     private val _mode = MutableLiveData(ModeTampilan.HARIAN)
     val mode: LiveData<ModeTampilan> = _mode
+
+    /**
+     * Index pilihan filter rentang: 0 = opsi kecil, 1 = opsi besar, 2 = Semua.
+     * Artinya beda tergantung mode aktif -- lihat [labelRentangUntukMode] dan [batasEntriUntukMode].
+     * Untuk mode Tahunan filter ini tidak dipakai (selalu tampil semua tahun).
+     */
+    private val _rentangIndex = MutableLiveData(0)
+    val rentangIndex: LiveData<Int> = _rentangIndex
 
     private val dateKeyFormat = SimpleDateFormat("yyyy-MM-dd", Locale("in", "ID"))
     private val monthKeyFormat = SimpleDateFormat("yyyy-MM", Locale("in", "ID"))
@@ -41,14 +46,28 @@ class StatistikViewModel(private val repo: Repository) : ViewModel() {
     private val chartLabelHarianFormat = SimpleDateFormat("d/M", Locale("in", "ID"))
     private val chartLabelBulananFormat = SimpleDateFormat("MMM yy", Locale("in", "ID"))
 
-    fun setRentang(r: RentangWaktu) {
-        _rentang.value = r
+    fun setRentangIndex(index: Int) {
+        _rentangIndex.value = index
         muatUlang()
     }
 
     fun setMode(m: ModeTampilan) {
         _mode.value = m
+        _rentangIndex.value = 0 // reset ke opsi pertama tiap ganti mode, supaya tidak membingungkan
         muatUlang()
+    }
+
+    /** Label 2 tombol pertama filter rentang, menyesuaikan mode aktif. Tombol ke-3 selalu "Semua". */
+    fun labelRentangUntukMode(m: ModeTampilan): Pair<String, String> = when (m) {
+        ModeTampilan.HARIAN -> "7 Hari" to "30 Hari"
+        ModeTampilan.BULANAN -> "6 Bulan" to "12 Bulan"
+        ModeTampilan.TAHUNAN -> "5 Tahun" to "10 Tahun"
+    }
+
+    private fun batasEntriUntukMode(m: ModeTampilan, index: Int): Int? = when (m) {
+        ModeTampilan.HARIAN -> when (index) { 0 -> 7; 1 -> 30; else -> null }
+        ModeTampilan.BULANAN -> when (index) { 0 -> 6; 1 -> 12; else -> null }
+        ModeTampilan.TAHUNAN -> when (index) { 0 -> 5; 1 -> 10; else -> null }
     }
 
     fun muatUlang() {
@@ -87,7 +106,7 @@ class StatistikViewModel(private val repo: Repository) : ViewModel() {
                 perTanggalSemua.getOrPut(key) { mutableListOf() }.add(s)
             }
 
-            // ---- Insight: Hari ini vs Kemarin vs rata-rata 7 hari (selalu berbasis semua data) ----
+            // ---- Insight: Hari ini vs Kemarin vs rata-rata 7 hari (selalu berbasis SEMUA data, tak terpengaruh filter) ----
             val kalender = Calendar.getInstance()
             val keyHariIni = dateKeyFormat.format(kalender.time)
             kalender.add(Calendar.DAY_OF_YEAR, -1)
@@ -106,28 +125,14 @@ class StatistikViewModel(private val repo: Repository) : ViewModel() {
             }
             _insight.postValue(RingkasanInsight(totalHariIni, totalKemarin, totalTujuhHari / 7.0))
 
-            // ---- Filter rentang waktu (7/30/Semua) -- dipakai untuk daftar mode Harian ----
-            val rentangSekarang = _rentang.value ?: RentangWaktu.TUJUH_HARI
-            val batasHari = rentangSekarang.jumlahHari
-            val perTanggalTerfilter = if (batasHari == null) {
-                perTanggalSemua
-            } else {
-                val cutoffCal = Calendar.getInstance()
-                cutoffCal.add(Calendar.DAY_OF_YEAR, -(batasHari - 1))
-                cutoffCal.set(Calendar.HOUR_OF_DAY, 0); cutoffCal.set(Calendar.MINUTE, 0)
-                cutoffCal.set(Calendar.SECOND, 0); cutoffCal.set(Calendar.MILLISECOND, 0)
-                val cutoff = cutoffCal.timeInMillis
-                TreeMap<String, MutableList<Session>>(compareByDescending { it }).apply {
-                    perTanggalSemua.forEach { (key, list) -> if (list.first().tanggalMulai >= cutoff) put(key, list) }
-                }
-            }
-
-            // ---- Bangun daftar ringkasan sesuai MODE tampilan (Harian / Bulanan / Tahunan) ----
+            // ---- Bangun daftar ringkasan sesuai MODE tampilan, lalu batasi sesuai filter rentang ----
             val modeSekarang = _mode.value ?: ModeTampilan.HARIAN
+            val indexSekarang = _rentangIndex.value ?: 0
+            val batasEntri = batasEntriUntukMode(modeSekarang, indexSekarang)
 
-            val hasilList: List<StatistikRingkasan> = when (modeSekarang) {
+            val hasilLengkap: List<StatistikRingkasan> = when (modeSekarang) {
                 ModeTampilan.HARIAN -> {
-                    perTanggalTerfilter.map { (key, sesiList) ->
+                    perTanggalSemua.map { (key, sesiList) ->
                         val a = hitungAgregat(sesiList)
                         val tgl = sesiList.first().tanggalMulai
                         StatistikRingkasan(
@@ -187,10 +192,16 @@ class StatistikViewModel(private val repo: Repository) : ViewModel() {
                     }
                 }
             }
+
+            // hasilLengkap sudah terurut menurun (terbaru dulu) karena TreeMap compareByDescending;
+            // "N entri terakhir" = ambil N item PERTAMA dari daftar yang menurun ini.
+            val hasilList = if (batasEntri != null) hasilLengkap.take(batasEntri) else hasilLengkap
             _data.postValue(hasilList)
 
-            // ---- Grafik mengikuti mode yang sedang aktif (kronologis lama->baru, dibatasi biar tetap enak dilihat) ----
-            val batasTitikChart = when (modeSekarang) {
+            // ---- Grafik: kronologis lama->baru, dari daftar yang sudah dibatasi filter di atas ----
+            // Pengaman tambahan khusus grafik: kalau "Semua" menghasilkan entri sangat banyak,
+            // grafik tetap dibatasi biar tidak penuh sesak (daftar/list di bawahnya tetap lengkap).
+            val batasAmanGrafik = when (modeSekarang) {
                 ModeTampilan.HARIAN -> 30
                 ModeTampilan.BULANAN -> 24
                 ModeTampilan.TAHUNAN -> 10
@@ -198,7 +209,7 @@ class StatistikViewModel(private val repo: Repository) : ViewModel() {
             val chartFormat = if (modeSekarang == ModeTampilan.HARIAN) chartLabelHarianFormat else chartLabelBulananFormat
             val chartEntries = hasilList
                 .sortedBy { it.representativeTimestamp }
-                .takeLast(batasTitikChart)
+                .takeLast(batasAmanGrafik)
                 .map { ringkasan ->
                     val labelChart = if (modeSekarang == ModeTampilan.TAHUNAN) ringkasan.label
                     else chartFormat.format(Date(ringkasan.representativeTimestamp))
