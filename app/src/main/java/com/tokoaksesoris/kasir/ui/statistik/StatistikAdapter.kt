@@ -11,7 +11,9 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class StatistikAdapter : ListAdapter<StatistikHarian, StatistikAdapter.VH>(DIFF) {
+class StatistikAdapter(
+    private val onItemClick: (StatistikHarian) -> Unit
+) : ListAdapter<StatistikHarian, StatistikAdapter.VH>(DIFF) {
 
     private val tanggalFormat = SimpleDateFormat("EEEE, d MMMM yyyy", Locale("in", "ID"))
     private val rupiahFormat = NumberFormat.getNumberInstance(Locale("in", "ID"))
@@ -27,7 +29,12 @@ class StatistikAdapter : ListAdapter<StatistikHarian, StatistikAdapter.VH>(DIFF)
         val item = getItem(position)
         holder.binding.tvTanggal.text = tanggalFormat.format(Date(item.tanggalMulai))
         holder.binding.tvTotalHarian.text = "Rp${rupiahFormat.format(item.total)}"
-        holder.binding.tvJumlahItem.text = "${item.jumlahItem} item · ${item.statusText}"
+        holder.binding.tvStatus.text = "${item.jumlahItem} item total · ${item.statusText}"
+        holder.binding.tvJumlahBarang.text = "${item.jumlahBarang} item"
+        holder.binding.tvSubtotalBarangHarian.text = "Rp${rupiahFormat.format(item.totalBarang)}"
+        holder.binding.tvJumlahPulsa.text = "${item.jumlahPulsa} item"
+        holder.binding.tvSubtotalPulsaHarian.text = "Rp${rupiahFormat.format(item.totalPulsa)}"
+        holder.binding.root.setOnClickListener { onItemClick(item) }
     }
 
     companion object {
