@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Theme.KasirAksesoris" parent="Theme.Material3.Light.NoActionBar">
-        <item name="colorPrimary">@color/brand_primary</item>
-        <item name="colorPrimaryDark">@color/brand_primary_dark</item>
-        <item name="colorSecondary">@color/brand_accent</item>
+        <item name="colorPrimary">@color/ios_blue</item>
+        <item name="colorPrimaryDark">@color/ios_blue</item>
+        <item name="colorSecondary">@color/ios_orange</item>
         <item name="android:colorBackground">@color/light_background</item>
         <item name="colorSurface">@color/light_surface</item>
         <item name="colorSurfaceVariant">@color/light_surface_variant</item>
         <item name="colorOnSurface">@color/light_on_surface</item>
+        <item name="colorOnSurfaceVariant">@color/light_on_surface_variant</item>
         <item name="android:statusBarColor">@color/light_background</item>
         <item name="android:windowLightStatusBar">true</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="materialButtonStyle">@style/Widget.KasirAksesoris.Button</item>
+    </style>
+
+    <style name="Widget.KasirAksesoris.Button" parent="Widget.Material3.Button">
+        <item name="cornerRadius">14dp</item>
     </style>
 </resources>
