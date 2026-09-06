@@ -15,36 +15,39 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingHorizontal="16dp"
+            android:paddingTop="8dp">
 
-            <!-- Top bar -->
+            <!-- Top bar: judul besar ala iOS "Large Title" + aksi -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:paddingBottom="12dp">
+                android:paddingBottom="16dp">
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Kasir Aksesoris"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:text="Wijaya Cell"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    android:letterSpacing="-0.01" />
 
                 <ImageButton
                     android:id="@+id/btnMenuLainnya"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="Menu lainnya (import/export)"
                     android:src="@drawable/ic_more" />
 
                 <ImageButton
                     android:id="@+id/btnToggleTheme"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginStart="4dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="Ganti tema"
                     android:src="@drawable/ic_theme_toggle" />
@@ -55,7 +58,7 @@
                 android:id="@+id/btnMulaiHariIni"
                 android:layout_width="match_parent"
                 android:layout_height="72dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="16dp"
                 android:text="Mulai Buka Hari Ini"
                 android:textSize="18sp"
                 app:cornerRadius="16dp" />
@@ -74,77 +77,124 @@
                     style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:cornerRadius="14dp"
                     android:text="Tutup Hari" />
 
-                <!-- Tabel Barang -->
+                <!-- Section label ala iOS (kapital kecil abu-abu) -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="6dp"
+                    android:paddingStart="8dp"
+                    android:text="BARANG"
+                    android:textAllCaps="true"
+                    android:textSize="12sp"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:letterSpacing="0.05" />
+
+                <!-- Card rounded berisi tabel Barang -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="16dp"
-                    android:gravity="center_vertical">
+                    android:orientation="vertical"
+                    android:background="@drawable/bg_card_rounded"
+                    android:paddingBottom="4dp">
 
-                    <TextView
-                        android:layout_width="0dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Barang"
-                        android:textStyle="bold"
-                        android:textSize="16sp" />
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="12dp"
+                        android:paddingTop="10dp"
+                        android:gravity="center_vertical">
 
-                    <TextView
-                        android:id="@+id/tvSubtotalBarang"
-                        android:layout_width="wrap_content"
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Subtotal"
+                            android:textSize="12sp"
+                            android:textColor="?attr/colorOnSurfaceVariant" />
+
+                        <TextView
+                            android:id="@+id/tvSubtotalBarang"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/ios_blue"
+                            tools:text="Rp80.000" />
+                    </LinearLayout>
+
+                    <include layout="@layout/row_table_header" android:id="@+id/headerBarang" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvBarang"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="13sp"
-                        android:textStyle="bold"
-                        tools:text="Rp80.000" />
+                        android:minHeight="180dp"
+                        android:nestedScrollingEnabled="false"
+                        tools:listitem="@layout/item_transaksi_row" />
                 </LinearLayout>
 
-                <include layout="@layout/row_table_header" android:id="@+id/headerBarang" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvBarang"
+                <!-- Section label Transaksi/Pulsa -->
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="220dp"
-                    android:nestedScrollingEnabled="false"
-                    tools:listitem="@layout/item_transaksi_row" />
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="6dp"
+                    android:paddingStart="8dp"
+                    android:text="TRANSAKSI / PULSA"
+                    android:textAllCaps="true"
+                    android:textSize="12sp"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:letterSpacing="0.05" />
 
-                <!-- Tabel Transaksi/Pulsa -->
+                <!-- Card rounded berisi tabel Transaksi/Pulsa -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="20dp"
-                    android:gravity="center_vertical">
+                    android:orientation="vertical"
+                    android:background="@drawable/bg_card_rounded"
+                    android:paddingBottom="4dp">
 
-                    <TextView
-                        android:layout_width="0dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Transaksi / Pulsa"
-                        android:textStyle="bold"
-                        android:textSize="16sp" />
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="12dp"
+                        android:paddingTop="10dp"
+                        android:gravity="center_vertical">
 
-                    <TextView
-                        android:id="@+id/tvSubtotalPulsa"
-                        android:layout_width="wrap_content"
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Subtotal"
+                            android:textSize="12sp"
+                            android:textColor="?attr/colorOnSurfaceVariant" />
+
+                        <TextView
+                            android:id="@+id/tvSubtotalPulsa"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/ios_blue"
+                            tools:text="Rp70.000" />
+                    </LinearLayout>
+
+                    <include layout="@layout/row_table_header" android:id="@+id/headerPulsa" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvPulsa"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="13sp"
-                        android:textStyle="bold"
-                        tools:text="Rp70.000" />
+                        android:minHeight="180dp"
+                        android:nestedScrollingEnabled="false"
+                        tools:listitem="@layout/item_transaksi_row" />
                 </LinearLayout>
-
-                <include layout="@layout/row_table_header" android:id="@+id/headerPulsa" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvPulsa"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:minHeight="220dp"
-                    android:nestedScrollingEnabled="false"
-                    tools:listitem="@layout/item_transaksi_row" />
 
                 <!-- ruang kosong supaya baris terakhir tabel tidak ketutup FAB tambah -->
                 <View
@@ -163,8 +213,8 @@
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:paddingHorizontal="16dp"
-        android:background="?attr/colorSurface"
-        android:elevation="4dp"
+        android:background="@drawable/bg_card_bottom_rounded"
+        android:elevation="6dp"
         android:visibility="gone"
         tools:visibility="visible">
 
@@ -181,7 +231,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:textSize="16sp"
+            android:textSize="17sp"
+            android:textColor="@color/ios_blue"
             tools:text="Rp150.000" />
     </LinearLayout>
 
@@ -193,6 +244,7 @@
         android:layout_margin="20dp"
         android:contentDescription="Tambah item"
         android:src="@drawable/ic_add"
+        app:backgroundTint="@color/ios_blue"
         android:visibility="gone"
         tools:visibility="visible" />
 </FrameLayout>
