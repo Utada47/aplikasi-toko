@@ -7,15 +7,12 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.tokoaksesoris.kasir.databinding.ItemStatistikRowBinding
 import java.text.NumberFormat
-import java.text.SimpleDateFormat
-import java.util.Date
 import java.util.Locale
 
 class StatistikAdapter(
-    private val onItemClick: (StatistikHarian) -> Unit
-) : ListAdapter<StatistikHarian, StatistikAdapter.VH>(DIFF) {
+    private val onItemClick: (StatistikRingkasan) -> Unit
+) : ListAdapter<StatistikRingkasan, StatistikAdapter.VH>(DIFF) {
 
-    private val tanggalFormat = SimpleDateFormat("EEEE, d MMMM yyyy", Locale("in", "ID"))
     private val rupiahFormat = NumberFormat.getNumberInstance(Locale("in", "ID"))
 
     inner class VH(val binding: ItemStatistikRowBinding) : RecyclerView.ViewHolder(binding.root)
@@ -27,9 +24,9 @@ class StatistikAdapter(
 
     override fun onBindViewHolder(holder: VH, position: Int) {
         val item = getItem(position)
-        holder.binding.tvTanggal.text = tanggalFormat.format(Date(item.tanggalMulai))
+        holder.binding.tvTanggal.text = item.label
         holder.binding.tvTotalHarian.text = "Rp${rupiahFormat.format(item.total)}"
-        holder.binding.tvStatus.text = "${item.jumlahItem} item total · ${item.statusText}"
+        holder.binding.tvStatus.text = item.subtitle
         holder.binding.tvJumlahBarang.text = "${item.jumlahBarang} item"
         holder.binding.tvSubtotalBarangHarian.text = "Rp${rupiahFormat.format(item.totalBarang)}"
         holder.binding.tvJumlahPulsa.text = "${item.jumlahPulsa} item"
@@ -38,10 +35,10 @@ class StatistikAdapter(
     }
 
     companion object {
-        private val DIFF = object : DiffUtil.ItemCallback<StatistikHarian>() {
-            override fun areItemsTheSame(oldItem: StatistikHarian, newItem: StatistikHarian) =
-                oldItem.sessionId == newItem.sessionId
-            override fun areContentsTheSame(oldItem: StatistikHarian, newItem: StatistikHarian) = oldItem == newItem
+        private val DIFF = object : DiffUtil.ItemCallback<StatistikRingkasan>() {
+            override fun areItemsTheSame(oldItem: StatistikRingkasan, newItem: StatistikRingkasan) =
+                oldItem.key == newItem.key
+            override fun areContentsTheSame(oldItem: StatistikRingkasan, newItem: StatistikRingkasan) = oldItem == newItem
         }
     }
 }
