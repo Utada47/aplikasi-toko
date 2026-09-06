@@ -22,7 +22,9 @@ class StatistikFragment : Fragment() {
     }
 
     private val adapterHarian = StatistikAdapter { item ->
-        DetailHarianActivity.start(requireContext(), item.sessionIds, item.tanggalMulai)
+        val modeSekarang = viewModel.mode.value ?: ModeTampilan.HARIAN
+        val judulKustom = if (modeSekarang == ModeTampilan.HARIAN) null else item.label
+        DetailHarianActivity.start(requireContext(), item.sessionIds, item.representativeTimestamp, judulKustom)
     }
     private val adapterTerlaris = BarangTerlarisAdapter()
 
@@ -43,6 +45,24 @@ class StatistikFragment : Fragment() {
 
         binding.rvBarangTerlaris.layoutManager = LinearLayoutManager(requireContext())
         binding.rvBarangTerlaris.adapter = adapterTerlaris
+
+        binding.toggleMode.check(binding.btnModeHarian.id)
+        binding.toggleMode.addOnButtonCheckedListener { _, checkedId, isChecked ->
+            if (!isChecked) return@addOnButtonCheckedListener
+            val modePilihan = when (checkedId) {
+                binding.btnModeBulanan.id -> ModeTampilan.BULANAN
+                binding.btnModeTahunan.id -> ModeTampilan.TAHUNAN
+                else -> ModeTampilan.HARIAN
+            }
+            // Filter rentang waktu (7/30/Semua) cuma relevan untuk mode Harian
+            binding.toggleRentang.visibility = if (modePilihan == ModeTampilan.HARIAN) View.VISIBLE else View.GONE
+            binding.tvLabelRiwayat.text = when (modePilihan) {
+                ModeTampilan.HARIAN -> "RIWAYAT HARIAN"
+                ModeTampilan.BULANAN -> "RIWAYAT BULANAN"
+                ModeTampilan.TAHUNAN -> "RIWAYAT TAHUNAN"
+            }
+            viewModel.setMode(modePilihan)
+        }
 
         binding.toggleRentang.check(binding.btnRentang7Hari.id)
         binding.toggleRentang.addOnButtonCheckedListener { _, checkedId, isChecked ->
