@@ -23,11 +23,48 @@
             android:letterSpacing="-0.01"
             android:paddingBottom="16dp" />
 
-        <!-- Filter rentang waktu -->
+        <!-- Mode tampilan: Harian / Bulanan / Tahunan -->
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/toggleMode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:singleSelection="true"
+            app:selectionRequired="true">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnModeHarian"
+                style="@style/Widget.Material3.Button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Harian"
+                android:textSize="13sp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnModeBulanan"
+                style="@style/Widget.Material3.Button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Bulanan"
+                android:textSize="13sp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnModeTahunan"
+                style="@style/Widget.Material3.Button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Tahunan"
+                android:textSize="13sp" />
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+
+        <!-- Filter rentang waktu (hanya relevan utk mode Harian) -->
         <com.google.android.material.button.MaterialButtonToggleGroup
             android:id="@+id/toggleRentang"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             app:singleSelection="true"
             app:selectionRequired="true">
 
@@ -211,8 +248,9 @@
                 tools:visibility="visible" />
         </LinearLayout>
 
-        <!-- Riwayat harian -->
+        <!-- Riwayat (label berubah sesuai mode) -->
         <TextView
+            android:id="@+id/tvLabelRiwayat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
