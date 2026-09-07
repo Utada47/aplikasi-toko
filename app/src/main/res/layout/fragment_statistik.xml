@@ -38,6 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Harian"
+                android:textColor="@color/toggle_button_text"
                 android:textSize="13sp" />
 
             <com.google.android.material.button.MaterialButton
@@ -47,6 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Bulanan"
+                android:textColor="@color/toggle_button_text"
                 android:textSize="13sp" />
 
             <com.google.android.material.button.MaterialButton
@@ -56,6 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Tahunan"
+                android:textColor="@color/toggle_button_text"
                 android:textSize="13sp" />
         </com.google.android.material.button.MaterialButtonToggleGroup>
 
