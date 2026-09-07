@@ -15,30 +15,35 @@
         android:textSize="18sp"
         android:layout_marginBottom="16dp" />
 
-    <RadioGroup
-        android:id="@+id/radioGroupTipe"
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/toggleTipe"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="16dp">
+        android:layout_marginBottom="16dp"
+        app:singleSelection="true"
+        app:selectionRequired="true">
 
-        <RadioButton
-            android:id="@+id/radioBarang"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnTipeBarang"
+            style="@style/Widget.Material3.Button"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_weight="1"
             android:text="Barang"
-            android:buttonTint="@color/radio_tint"
+            android:textColor="@color/toggle_button_text"
+            android:textSize="13sp"
             android:checked="true" />
 
-        <RadioButton
-            android:id="@+id/radioPulsa"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnTipePulsa"
+            style="@style/Widget.Material3.Button"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_weight="1"
             android:text="Transaksi / Pulsa"
-            android:buttonTint="@color/radio_tint" />
-    </RadioGroup>
+            android:textColor="@color/toggle_button_text"
+            android:textSize="13sp" />
+    </com.google.android.material.button.MaterialButtonToggleGroup>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilNama"
