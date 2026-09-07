@@ -18,12 +18,17 @@ import kotlinx.coroutines.launch
  * Dialog tambah / edit item transaksi.
  *
  * Fitur autocomplete:
+ * ─ Saran nama dicari LINTAS KATEGORI (Barang & Transaksi/Pulsa digabung) --
+ *   tidak peduli radio button mana yang sedang aktif saat mengetik.
  * ─ Saat user memilih nama dari dropdown, field Harga otomatis terisi
- *   dengan harga terakhir yang pernah diinput untuk nama tersebut.
+ *   dengan harga terakhir yang pernah diinput untuk nama tersebut, DAN
+ *   radio button otomatis pindah mengikuti kategori asli nama itu di histori
+ *   (misal ketik "dana" lalu pilih "Top Up Dana" yang historinya Transaksi/Pulsa
+ *   -> radio otomatis pindah ke Transaksi/Pulsa meski awalnya di Barang).
  * ─ Saat user menekan / menyentuh field Harga (yang sudah terisi otomatis),
  *   isi langsung dikosongkan — user tidak perlu hapus manual terlebih dahulu.
  * ─ Jika user mengetik nama secara manual (tidak pilih dari dropdown),
- *   field Harga tidak tersentuh sama sekali.
+ *   field Harga & radio button tidak tersentuh sama sekali.
  */
 class AddItemDialogFragment(
     private val repository: Repository,
@@ -57,14 +62,14 @@ class AddItemDialogFragment(
             }
         }
 
-        // ── Muat saran autocomplete pertama kali ─────────────────────────────
-        muatSaran(tipeTerpilih())
+        // ── Muat saran autocomplete (lintas kategori, sekali saja) ───────────
+        muatSaranGlobal()
 
-        // ── Ganti tipe → reload saran, hint berubah ──────────────────────────
+        // ── Ganti tipe manual (tap radio langsung) → hint berubah saja ───────
+        // Saran TIDAK perlu dimuat ulang karena sudah lintas kategori dari awal.
         binding.radioGroupTipe.setOnCheckedChangeListener { _, checkedId ->
             binding.tilNama.hint = if (checkedId == binding.radioBarang.id)
                 "Nama Barang" else "Nama Transaksi / Pulsa"
-            muatSaran(tipeTerpilih())
             // etNama & etHarga TIDAK di-clear saat ganti tipe (sesuai spesifikasi)
         }
 
@@ -78,6 +83,13 @@ class AddItemDialogFragment(
             binding.etHarga.setText(hargaBulat)
             binding.tilHarga.hint = "Harga (terisi otomatis — ketuk untuk ubah)"
             hargaDariAutocomplete = true
+
+            // Radio button otomatis ikut kategori asli nama ini di histori
+            if (dipilih.tipe == TipeTransaksi.PULSA) {
+                binding.radioPulsa.isChecked = true
+            } else {
+                binding.radioBarang.isChecked = true
+            }
 
             // Bersihkan error jika ada
             binding.tilNama.error  = null
@@ -141,10 +153,10 @@ class AddItemDialogFragment(
         if (binding.radioGroupTipe.checkedRadioButtonId == binding.radioBarang.id)
             TipeTransaksi.BARANG else TipeTransaksi.PULSA
 
-    // ── Muat saran autocomplete dari DB ──────────────────────────────────────
-    private fun muatSaran(tipe: TipeTransaksi) {
+    // ── Muat saran autocomplete dari DB (lintas kategori) ────────────────────
+    private fun muatSaranGlobal() {
         lifecycleScope.launch {
-            val daftarSaran = repository.getSaranNamaWithHarga(tipe)
+            val daftarSaran = repository.getSaranNamaSemuaTipe()
             if (_binding == null) return@launch   // dialog sudah ditutup
 
             // ArrayAdapter<NamaDanHarga> — toString() pada NamaDanHarga
