@@ -28,6 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Barang"
+            android:buttonTint="@color/radio_tint"
             android:checked="true" />
 
         <RadioButton
@@ -35,7 +36,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Transaksi / Pulsa" />
+            android:text="Transaksi / Pulsa"
+            android:buttonTint="@color/radio_tint" />
     </RadioGroup>
 
     <com.google.android.material.textfield.TextInputLayout
