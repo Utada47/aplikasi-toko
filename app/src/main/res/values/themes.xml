@@ -4,13 +4,16 @@
         <item name="colorPrimary">@color/ios_blue</item>
         <item name="colorPrimaryDark">@color/ios_blue</item>
         <item name="colorSecondary">@color/ios_orange</item>
+        <item name="colorAccent">@color/ios_blue</item>
         <item name="android:colorBackground">@color/light_background</item>
         <item name="colorSurface">@color/light_surface</item>
         <item name="colorSurfaceVariant">@color/light_surface_variant</item>
         <item name="colorOnSurface">@color/light_on_surface</item>
         <item name="colorOnSurfaceVariant">@color/light_on_surface_variant</item>
         <item name="android:statusBarColor">@color/light_background</item>
+        <item name="android:navigationBarColor">@color/light_surface</item>
         <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="materialButtonStyle">@style/Widget.KasirAksesoris.Button</item>
     </style>
