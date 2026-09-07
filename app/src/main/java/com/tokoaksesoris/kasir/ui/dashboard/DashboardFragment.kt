@@ -114,8 +114,10 @@ class DashboardFragment : Fragment() {
     }
 
     /**
-     * Pasang gesture swipe (geser kiri) pada RecyclerView untuk menghapus item,
-     * dengan latar merah + ikon tempat sampah, dan Snackbar "Undo" supaya bisa dibatalkan.
+     * Pasang gesture swipe (geser kiri) pada RecyclerView untuk menghapus item.
+     * Menampilkan latar merah + ikon tempat sampah saat digeser, lalu modal konfirmasi
+     * sebelum benar-benar menghapus. Kalau dibatalkan, baris otomatis kembali ke posisi semula.
+     * Setelah dihapus, tetap ada Snackbar "Undo" sebagai jaring pengaman tambahan.
      */
     private fun pasangSwipeToDelete(recyclerView: RecyclerView, adapter: TransaksiAdapter) {
         val background = ColorDrawable(Color.parseColor("#FF3B30")) // iOS system red
@@ -128,10 +130,22 @@ class DashboardFragment : Fragment() {
                 val position = viewHolder.bindingAdapterPosition
                 if (position == RecyclerView.NO_POSITION) return
                 val item = adapter.currentList[position]
-                viewModel.hapusItem(item)
 
-                Snackbar.make(binding.root, "Item \"${item.nama}\" dihapus", Snackbar.LENGTH_LONG)
-                    .setAction("Undo") { viewModel.undoHapus(item) }
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle("Hapus Item")
+                    .setMessage("Hapus \"${item.nama}\" (Rp${rupiahFormat.format(item.harga)}) dari daftar?")
+                    .setPositiveButton("Hapus") { _, _ ->
+                        viewModel.hapusItem(item)
+                        Snackbar.make(binding.root, "Item \"${item.nama}\" dihapus", Snackbar.LENGTH_LONG)
+                            .setAction("Undo") { viewModel.undoHapus(item) }
+                            .show()
+                    }
+                    .setNegativeButton("Batal") { _, _ ->
+                        adapter.notifyItemChanged(position) // kembalikan baris ke posisi semula
+                    }
+                    .setOnCancelListener {
+                        adapter.notifyItemChanged(position) // ditutup dgn back/tap luar -> tetap kembalikan
+                    }
                     .show()
             }
 
