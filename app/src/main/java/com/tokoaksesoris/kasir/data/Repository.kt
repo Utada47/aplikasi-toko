@@ -46,6 +46,14 @@ class Repository(private val dao: AppDao) {
     suspend fun getSaranNamaWithHarga(tipe: TipeTransaksi): List<NamaDanHarga> =
         dao.getNamaWithHargaTerakhir(tipe)
 
+    /**
+     * Saran autocomplete LINTAS KATEGORI (Barang & Transaksi/Pulsa digabung).
+     * Dipakai supaya user bisa cari nama dari histori tanpa peduli radio button
+     * mana yang sedang aktif -- tipe aslinya ikut dibawa di tiap hasil.
+     */
+    suspend fun getSaranNamaSemuaTipe(): List<NamaDanHarga> =
+        dao.getNamaWithHargaTerakhirSemuaTipe()
+
     /** Kompatibilitas mundur — hanya nama tanpa harga. */
     suspend fun getSaranNama(tipe: TipeTransaksi): List<String> =
         dao.getNamaWithHargaTerakhir(tipe).map { it.nama }
