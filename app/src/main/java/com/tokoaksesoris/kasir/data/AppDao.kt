@@ -52,17 +52,11 @@ interface AppDao {
     suspend fun getAllTransaksiOnce(): List<TransaksiItem>
 
     /**
-     * Autocomplete: kembalikan satu baris per nama unik,
-     * beserta HARGA TERAKHIR (waktu terbesar) untuk nama tersebut.
-     *
-     * Cara kerja query:
-     *  - subquery mencari waktu MAX per nama dalam tipe yang sama
-     *  - join ke tabel utama untuk ambil harga pada waktu tersebut
-     *  - GROUP BY nama memastikan hanya satu baris per nama
-     *    (menghindari duplikat jika ada dua item dengan waktu sama persis)
+     * Autocomplete (per tipe): kembalikan satu baris per nama unik dalam tipe tersebut,
+     * beserta HARGA TERAKHIR (waktu terbesar) untuk nama itu.
      */
     @Query("""
-        SELECT t.nama, t.harga
+        SELECT t.nama, t.harga, t.tipe
         FROM transaksi_items t
         INNER JOIN (
             SELECT nama, MAX(waktu) AS maxWaktu
@@ -76,6 +70,25 @@ interface AppDao {
         ORDER BY t.nama ASC
     """)
     suspend fun getNamaWithHargaTerakhir(tipe: TipeTransaksi): List<NamaDanHarga>
+
+    /**
+     * Autocomplete LINTAS KATEGORI: cari nama dari SELURUH histori (Barang maupun
+     * Transaksi/Pulsa), tidak dibatasi tipe yang sedang dipilih di radio button.
+     * Setiap hasil membawa tipe aslinya dari histori terakhir nama tersebut, supaya
+     * saat dipilih, radio button bisa otomatis pindah mengikuti kategori itu.
+     */
+    @Query("""
+        SELECT t.nama, t.harga, t.tipe
+        FROM transaksi_items t
+        INNER JOIN (
+            SELECT nama, MAX(waktu) AS maxWaktu
+            FROM transaksi_items
+            GROUP BY nama
+        ) latest ON t.nama = latest.nama AND t.waktu = latest.maxWaktu
+        GROUP BY t.nama
+        ORDER BY t.nama ASC
+    """)
+    suspend fun getNamaWithHargaTerakhirSemuaTipe(): List<NamaDanHarga>
 
     // ---------- Reset ----------
     @Query("DELETE FROM sessions")
