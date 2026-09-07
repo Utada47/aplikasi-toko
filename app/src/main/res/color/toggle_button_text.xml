@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Terpilih: latar biru solid -> teks putih supaya kontras di kedua tema -->
+    <item android:color="#FFFFFFFF" android:state_checked="true" />
+    <!-- Tidak terpilih: ikut warna teks tema aktif (hitam di terang, putih di gelap) -->
+    <item android:color="?attr/colorOnSurface" />
+</selector>
