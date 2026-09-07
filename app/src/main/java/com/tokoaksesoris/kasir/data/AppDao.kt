@@ -1,11 +1,7 @@
 package com.tokoaksesoris.kasir.data
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 
 @Dao
 interface AppDao {
@@ -39,10 +35,11 @@ interface AppDao {
     @Delete
     suspend fun deleteTransaksi(item: TransaksiItem)
 
-    @Query("SELECT DISTINCT nama FROM transaksi_items WHERE tipe = :tipe ORDER BY nama ASC")
-    suspend fun getNamaSuggestions(tipe: TipeTransaksi): List<String>
-
-    @Query("SELECT * FROM transaksi_items WHERE sessionId = :sessionId AND tipe = :tipe ORDER BY waktu ASC")
+    @Query("""
+        SELECT * FROM transaksi_items
+        WHERE sessionId = :sessionId AND tipe = :tipe
+        ORDER BY waktu ASC
+    """)
     fun observeItemsBySessionAndTipe(sessionId: Long, tipe: TipeTransaksi): LiveData<List<TransaksiItem>>
 
     @Query("SELECT COALESCE(SUM(harga), 0.0) FROM transaksi_items WHERE sessionId = :sessionId")
@@ -54,7 +51,33 @@ interface AppDao {
     @Query("SELECT * FROM transaksi_items ORDER BY waktu ASC")
     suspend fun getAllTransaksiOnce(): List<TransaksiItem>
 
-    // ---------- Migrasi / reset ----------
+    /**
+     * Autocomplete: kembalikan satu baris per nama unik,
+     * beserta HARGA TERAKHIR (waktu terbesar) untuk nama tersebut.
+     *
+     * Cara kerja query:
+     *  - subquery mencari waktu MAX per nama dalam tipe yang sama
+     *  - join ke tabel utama untuk ambil harga pada waktu tersebut
+     *  - GROUP BY nama memastikan hanya satu baris per nama
+     *    (menghindari duplikat jika ada dua item dengan waktu sama persis)
+     */
+    @Query("""
+        SELECT t.nama, t.harga
+        FROM transaksi_items t
+        INNER JOIN (
+            SELECT nama, MAX(waktu) AS maxWaktu
+            FROM transaksi_items
+            WHERE tipe = :tipe
+            GROUP BY nama
+        ) latest ON t.nama = latest.nama
+                 AND t.waktu = latest.maxWaktu
+                 AND t.tipe = :tipe
+        GROUP BY t.nama
+        ORDER BY t.nama ASC
+    """)
+    suspend fun getNamaWithHargaTerakhir(tipe: TipeTransaksi): List<NamaDanHarga>
+
+    // ---------- Reset ----------
     @Query("DELETE FROM sessions")
     suspend fun deleteAllSessions()
 
