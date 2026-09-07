@@ -85,15 +85,6 @@
                 android:layout_weight="1"
                 android:text="30 Hari"
                 android:textSize="13sp" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnRentangSemua"
-                style="@style/Widget.Material3.Button.OutlinedButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Semua"
-                android:textSize="13sp" />
         </com.google.android.material.button.MaterialButtonToggleGroup>
 
         <!-- Kartu insight: Hari ini / Kemarin / Rata-rata 7 hari -->
