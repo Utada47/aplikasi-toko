@@ -6,6 +6,7 @@ import android.widget.ArrayAdapter
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.tokoaksesoris.kasir.R
 import com.tokoaksesoris.kasir.data.Repository
 import com.tokoaksesoris.kasir.data.TipeTransaksi
 import com.tokoaksesoris.kasir.data.TransaksiItem
@@ -89,7 +90,7 @@ class AddItemDialogFragment(
         lifecycleScope.launch {
             val saran = repository.getSaranNama(tipe)
             if (_binding == null) return@launch // dialog mungkin sudah ditutup
-            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, saran)
+            val adapter = ArrayAdapter(requireContext(), R.layout.item_dropdown_saran, saran)
             binding.etNama.setAdapter(adapter)
         }
     }
