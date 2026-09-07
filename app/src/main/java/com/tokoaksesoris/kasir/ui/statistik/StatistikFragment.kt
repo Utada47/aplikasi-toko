@@ -65,11 +65,7 @@ class StatistikFragment : Fragment() {
         binding.toggleRentang.check(binding.btnRentangKecil.id)
         binding.toggleRentang.addOnButtonCheckedListener { _, checkedId, isChecked ->
             if (!isChecked) return@addOnButtonCheckedListener
-            val index = when (checkedId) {
-                binding.btnRentangBesar.id -> 1
-                binding.btnRentangSemua.id -> 2
-                else -> 0
-            }
+            val index = if (checkedId == binding.btnRentangBesar.id) 1 else 0
             viewModel.setRentangIndex(index)
         }
 
