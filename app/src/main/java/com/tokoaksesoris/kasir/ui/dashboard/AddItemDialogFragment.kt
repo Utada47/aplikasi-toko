@@ -56,19 +56,20 @@ class AddItemDialogFragment(
             binding.etNama.setText(itemToEdit.nama)
             binding.etHarga.setText(itemToEdit.harga.toLong().toString())
             if (itemToEdit.tipe == TipeTransaksi.PULSA) {
-                binding.radioPulsa.isChecked = true
+                binding.toggleTipe.check(binding.btnTipePulsa.id)
             } else {
-                binding.radioBarang.isChecked = true
+                binding.toggleTipe.check(binding.btnTipeBarang.id)
             }
         }
 
         // ── Muat saran autocomplete (lintas kategori, sekali saja) ───────────
         muatSaranGlobal()
 
-        // ── Ganti tipe manual (tap radio langsung) → hint berubah saja ───────
+        // ── Ganti tipe manual (tap tab langsung) → hint berubah saja ─────────
         // Saran TIDAK perlu dimuat ulang karena sudah lintas kategori dari awal.
-        binding.radioGroupTipe.setOnCheckedChangeListener { _, checkedId ->
-            binding.tilNama.hint = if (checkedId == binding.radioBarang.id)
+        binding.toggleTipe.addOnButtonCheckedListener { _, checkedId, isChecked ->
+            if (!isChecked) return@addOnButtonCheckedListener
+            binding.tilNama.hint = if (checkedId == binding.btnTipeBarang.id)
                 "Nama Barang" else "Nama Transaksi / Pulsa"
             // etNama & etHarga TIDAK di-clear saat ganti tipe (sesuai spesifikasi)
         }
@@ -84,11 +85,11 @@ class AddItemDialogFragment(
             binding.tilHarga.hint = "Harga (terisi otomatis — ketuk untuk ubah)"
             hargaDariAutocomplete = true
 
-            // Radio button otomatis ikut kategori asli nama ini di histori
+            // Tab otomatis ikut kategori asli nama ini di histori
             if (dipilih.tipe == TipeTransaksi.PULSA) {
-                binding.radioPulsa.isChecked = true
+                binding.toggleTipe.check(binding.btnTipePulsa.id)
             } else {
-                binding.radioBarang.isChecked = true
+                binding.toggleTipe.check(binding.btnTipeBarang.id)
             }
 
             // Bersihkan error jika ada
@@ -150,7 +151,7 @@ class AddItemDialogFragment(
 
     // ── Helper: tipe yang sedang dipilih ─────────────────────────────────────
     private fun tipeTerpilih(): TipeTransaksi =
-        if (binding.radioGroupTipe.checkedRadioButtonId == binding.radioBarang.id)
+        if (binding.toggleTipe.checkedButtonId == binding.btnTipeBarang.id)
             TipeTransaksi.BARANG else TipeTransaksi.PULSA
 
     // ── Muat saran autocomplete dari DB (lintas kategori) ────────────────────
