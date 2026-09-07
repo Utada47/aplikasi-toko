@@ -57,17 +57,17 @@ class StatistikViewModel(private val repo: Repository) : ViewModel() {
         muatUlang()
     }
 
-    /** Label 2 tombol pertama filter rentang, menyesuaikan mode aktif. Tombol ke-3 selalu "Semua". */
+    /** Label 2 tombol filter rentang, menyesuaikan mode aktif. */
     fun labelRentangUntukMode(m: ModeTampilan): Pair<String, String> = when (m) {
         ModeTampilan.HARIAN -> "7 Hari" to "30 Hari"
         ModeTampilan.BULANAN -> "6 Bulan" to "12 Bulan"
         ModeTampilan.TAHUNAN -> "5 Tahun" to "10 Tahun"
     }
 
-    private fun batasEntriUntukMode(m: ModeTampilan, index: Int): Int? = when (m) {
-        ModeTampilan.HARIAN -> when (index) { 0 -> 7; 1 -> 30; else -> null }
-        ModeTampilan.BULANAN -> when (index) { 0 -> 6; 1 -> 12; else -> null }
-        ModeTampilan.TAHUNAN -> when (index) { 0 -> 5; 1 -> 10; else -> null }
+    private fun batasEntriUntukMode(m: ModeTampilan, index: Int): Int = when (m) {
+        ModeTampilan.HARIAN -> if (index == 1) 30 else 7
+        ModeTampilan.BULANAN -> if (index == 1) 12 else 6
+        ModeTampilan.TAHUNAN -> if (index == 1) 10 else 5
     }
 
     fun muatUlang() {
@@ -195,7 +195,7 @@ class StatistikViewModel(private val repo: Repository) : ViewModel() {
 
             // hasilLengkap sudah terurut menurun (terbaru dulu) karena TreeMap compareByDescending;
             // "N entri terakhir" = ambil N item PERTAMA dari daftar yang menurun ini.
-            val hasilList = if (batasEntri != null) hasilLengkap.take(batasEntri) else hasilLengkap
+            val hasilList = hasilLengkap.take(batasEntri)
             _data.postValue(hasilList)
 
             // ---- Grafik: kronologis lama->baru, dari daftar yang sudah dibatasi filter di atas ----
