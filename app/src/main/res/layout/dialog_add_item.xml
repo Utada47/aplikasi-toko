@@ -32,6 +32,7 @@
             android:text="Barang"
             android:textColor="@color/toggle_button_text"
             android:textSize="13sp"
+            app:backgroundTint="@color/tab_background"
             android:checked="true" />
 
         <com.google.android.material.button.MaterialButton
@@ -42,7 +43,8 @@
             android:layout_weight="1"
             android:text="Transaksi / Pulsa"
             android:textColor="@color/toggle_button_text"
-            android:textSize="13sp" />
+            android:textSize="13sp"
+            app:backgroundTint="@color/tab_background" />
     </com.google.android.material.button.MaterialButtonToggleGroup>
 
     <com.google.android.material.textfield.TextInputLayout
