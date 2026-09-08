@@ -13,7 +13,8 @@ import java.util.Date
 import java.util.Locale
 
 class TransaksiAdapter(
-    private val onItemClick: (TransaksiItem) -> Unit
+    private val onItemClick: (TransaksiItem) -> Unit,
+    private val onLongPress: (TransaksiItem, android.view.View) -> Unit
 ) : ListAdapter<TransaksiItem, TransaksiAdapter.VH>(DIFF) {
 
     private val jamFormat = SimpleDateFormat("HH:mm", Locale("in", "ID"))
@@ -33,6 +34,10 @@ class TransaksiAdapter(
         holder.binding.tvNama.text = item.nama
         holder.binding.tvHarga.text = "Rp${rupiahFormat.format(item.harga)}"
         holder.binding.root.setOnClickListener { onItemClick(item) }
+        holder.binding.root.setOnLongClickListener {
+            onLongPress(item, holder.binding.root)
+            true
+        }
     }
 
     companion object {
