@@ -53,8 +53,14 @@ class DashboardFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapterBarang = TransaksiAdapter { item -> bukaDialogEdit(item) }
-        adapterPulsa = TransaksiAdapter { item -> bukaDialogEdit(item) }
+        adapterBarang = TransaksiAdapter(
+            onItemClick = { item -> bukaDialogEdit(item) },
+            onLongPress = { item, view -> mulaiDrag(item, view) }
+        )
+        adapterPulsa = TransaksiAdapter(
+            onItemClick = { item -> bukaDialogEdit(item) },
+            onLongPress = { item, view -> mulaiDrag(item, view) }
+        )
         binding.rvBarang.layoutManager = LinearLayoutManager(requireContext())
         binding.rvBarang.adapter = adapterBarang
         binding.rvPulsa.layoutManager = LinearLayoutManager(requireContext())
