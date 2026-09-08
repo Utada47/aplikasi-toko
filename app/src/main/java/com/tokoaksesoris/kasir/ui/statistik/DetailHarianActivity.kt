@@ -51,8 +51,14 @@ class DetailHarianActivity : AppCompatActivity() {
 
         binding.btnKembali.setOnClickListener { finish() }
 
-        adapterBarang = TransaksiAdapter { item -> bukaDialogEdit(item) }
-        adapterPulsa = TransaksiAdapter { item -> bukaDialogEdit(item) }
+        adapterBarang = TransaksiAdapter(
+            onItemClick = { item -> bukaDialogEdit(item) },
+            onLongPress = { _, _ -> } // drag-and-drop belum didukung di layar detail ini
+        )
+        adapterPulsa = TransaksiAdapter(
+            onItemClick = { item -> bukaDialogEdit(item) },
+            onLongPress = { _, _ -> }
+        )
         binding.rvBarangDetail.layoutManager = LinearLayoutManager(this)
         binding.rvBarangDetail.adapter = adapterBarang
         binding.rvPulsaDetail.layoutManager = LinearLayoutManager(this)
