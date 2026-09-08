@@ -4,23 +4,26 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <!-- Badan HP -->
+    <!-- Badan HP: outline bersih & minimalis -->
     <path
         android:fillColor="#FFFFFF"
-        android:pathData="M46,27 H62 Q69,27 69,34 V74 Q69,81 62,81 H46 Q39,81 39,74 V34 Q39,27 46,27 Z" />
+        android:pathData="M47,26 H61 Q66,26 66,31 V73 Q66,78 61,78 H47 Q42,78 42,73 V31 Q42,26 47,26 Z" />
 
-    <!-- Layar HP (warna gelap supaya kontras) -->
+    <!-- Layar HP (warna biru gelap senada latar, memberi kesan "cutout") -->
     <path
-        android:fillColor="#14352D"
-        android:pathData="M46,33 H62 Q66,33 66,37 V71 Q66,75 62,75 H46 Q42,75 42,71 V37 Q42,33 46,33 Z" />
+        android:fillColor="#0058CC"
+        android:pathData="M48,32 H60 Q63,32 63,35 V69 Q63,72 60,72 H48 Q45,72 45,69 V35 Q45,32 48,32 Z" />
 
     <!-- Lubang kamera -->
     <path
         android:fillColor="#FFFFFF"
-        android:pathData="M52.5,29.5 m-1.4,0 a1.4,1.4 0,1 1,2.8 0 a1.4,1.4 0,1 1,-2.8 0z" />
+        android:pathData="M54,29 m-1.3,0 a1.3,1.3 0,1 1,2.6 0 a1.3,1.3 0,1 1,-2.6 0z" />
 
-    <!-- Petir (simbol charging / aksesoris) -->
+    <!-- Label harga kecil (ilustrasi "kasir/toko") menempel di sudut kanan bawah HP -->
     <path
-        android:fillColor="#F2A65A"
-        android:pathData="M58,40 L47,59 L53,59 L51,69 L65,51 L57,51 Z" />
+        android:fillColor="#FF9500"
+        android:pathData="M68,58 L78,68 L68,78 L58,68 Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M68,62 m-1.8,0 a1.8,1.8 0,1 1,3.6 0 a1.8,1.8 0,1 1,-3.6 0z" />
 </vector>
