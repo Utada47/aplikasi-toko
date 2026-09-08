@@ -95,6 +95,7 @@
 
                 <!-- Card rounded berisi tabel Barang -->
                 <LinearLayout
+                    android:id="@+id/cardBarang"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -153,6 +154,7 @@
 
                 <!-- Card rounded berisi tabel Transaksi/Pulsa -->
                 <LinearLayout
+                    android:id="@+id/cardPulsa"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
