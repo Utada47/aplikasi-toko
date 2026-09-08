@@ -39,7 +39,8 @@
                 android:layout_weight="1"
                 android:text="Harian"
                 android:textColor="@color/toggle_button_text"
-                android:textSize="13sp" />
+                android:textSize="13sp"
+                app:backgroundTint="@color/tab_background" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnModeBulanan"
@@ -49,7 +50,8 @@
                 android:layout_weight="1"
                 android:text="Bulanan"
                 android:textColor="@color/toggle_button_text"
-                android:textSize="13sp" />
+                android:textSize="13sp"
+                app:backgroundTint="@color/tab_background" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnModeTahunan"
@@ -59,7 +61,8 @@
                 android:layout_weight="1"
                 android:text="Tahunan"
                 android:textColor="@color/toggle_button_text"
-                android:textSize="13sp" />
+                android:textSize="13sp"
+                app:backgroundTint="@color/tab_background" />
         </com.google.android.material.button.MaterialButtonToggleGroup>
 
         <!-- Filter rentang waktu (hanya relevan utk mode Harian) -->
