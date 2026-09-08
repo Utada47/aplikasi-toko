@@ -69,6 +69,9 @@ class DashboardFragment : Fragment() {
         pasangSwipeToDelete(binding.rvBarang, adapterBarang)
         pasangSwipeToDelete(binding.rvPulsa, adapterPulsa)
 
+        pasangDragTarget(binding.cardBarang, TipeTransaksi.BARANG)
+        pasangDragTarget(binding.cardPulsa, TipeTransaksi.PULSA)
+
         binding.btnToggleTheme.setOnClickListener {
             ThemeHelper.toggleTheme(requireContext())
         }
