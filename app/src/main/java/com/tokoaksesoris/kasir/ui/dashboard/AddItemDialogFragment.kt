@@ -17,18 +17,22 @@ import kotlinx.coroutines.launch
 /**
  * Dialog tambah / edit item transaksi.
  *
+ * Kategori Barang / Transaksi-Pulsa dipilih lewat tab segmented control
+ * (bukan radio button lagi) supaya lebih mudah dipencet dan senada dengan
+ * gaya toggle lain di aplikasi ini.
+ *
  * Fitur autocomplete:
  * ─ Saran nama dicari LINTAS KATEGORI (Barang & Transaksi/Pulsa digabung) --
- *   tidak peduli radio button mana yang sedang aktif saat mengetik.
+ *   tidak peduli tab mana yang sedang aktif saat mengetik.
  * ─ Saat user memilih nama dari dropdown, field Harga otomatis terisi
  *   dengan harga terakhir yang pernah diinput untuk nama tersebut, DAN
- *   radio button otomatis pindah mengikuti kategori asli nama itu di histori
+ *   tab otomatis pindah mengikuti kategori asli nama itu di histori
  *   (misal ketik "dana" lalu pilih "Top Up Dana" yang historinya Transaksi/Pulsa
- *   -> radio otomatis pindah ke Transaksi/Pulsa meski awalnya di Barang).
+ *   -> tab otomatis pindah ke Transaksi/Pulsa meski awalnya di Barang).
  * ─ Saat user menekan / menyentuh field Harga (yang sudah terisi otomatis),
  *   isi langsung dikosongkan — user tidak perlu hapus manual terlebih dahulu.
  * ─ Jika user mengetik nama secara manual (tidak pilih dari dropdown),
- *   field Harga & radio button tidak tersentuh sama sekali.
+ *   field Harga & tab tidak tersentuh sama sekali.
  */
 class AddItemDialogFragment(
     private val repository: Repository,
