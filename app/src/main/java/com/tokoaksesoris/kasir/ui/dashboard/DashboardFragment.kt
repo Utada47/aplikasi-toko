@@ -188,6 +188,64 @@ class DashboardFragment : Fragment() {
         ItemTouchHelper(callback).attachToRecyclerView(recyclerView)
     }
 
+    /**
+     * Mulai drag-and-drop native Android saat sebuah baris di-tahan (long-press).
+     * [item] dibawa sebagai "local state" drag, supaya target drop tahu item mana
+     * yang sedang diseret tanpa perlu serialisasi apa pun.
+     */
+    @Suppress("DEPRECATION")
+    private fun mulaiDrag(item: TransaksiItem, view: View) {
+        val clipData = ClipData.newPlainText("item_id", item.id.toString())
+        val shadowBuilder = View.DragShadowBuilder(view)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            view.startDragAndDrop(clipData, shadowBuilder, item, 0)
+        } else {
+            view.startDrag(clipData, shadowBuilder, item, 0)
+        }
+    }
+
+    /**
+     * Jadikan [cardView] (container tabel Barang atau Pulsa) sebagai target drop.
+     * Kalau item yang diseret berasal dari kategori LAIN, begitu dilepas (drop),
+     * kategorinya otomatis diubah jadi [tipeTujuan] -- inilah fitur "seret untuk
+     * memindah kategori jika salah pilih saat input".
+     */
+    private fun pasangDragTarget(cardView: View, tipeTujuan: TipeTransaksi) {
+        cardView.setOnDragListener { view, event ->
+            when (event.action) {
+                DragEvent.ACTION_DRAG_STARTED -> true
+
+                DragEvent.ACTION_DRAG_ENTERED -> {
+                    view.setBackgroundResource(R.drawable.bg_card_drop_target)
+                    true
+                }
+
+                DragEvent.ACTION_DRAG_EXITED -> {
+                    view.setBackgroundResource(R.drawable.bg_card_rounded)
+                    true
+                }
+
+                DragEvent.ACTION_DROP -> {
+                    view.setBackgroundResource(R.drawable.bg_card_rounded)
+                    val item = event.localState as? TransaksiItem
+                    if (item != null && item.tipe != tipeTujuan) {
+                        viewModel.updateItem(item, tipeTujuan, item.nama, item.harga)
+                        val namaTujuan = if (tipeTujuan == TipeTransaksi.BARANG) "Barang" else "Transaksi/Pulsa"
+                        Snackbar.make(binding.root, "\"${item.nama}\" dipindah ke $namaTujuan", Snackbar.LENGTH_SHORT).show()
+                    }
+                    true
+                }
+
+                DragEvent.ACTION_DRAG_ENDED -> {
+                    view.setBackgroundResource(R.drawable.bg_card_rounded) // jaga-jaga selalu balik normal
+                    true
+                }
+
+                else -> true
+            }
+        }
+    }
+
     private fun bukaDialogEdit(item: TransaksiItem) {
         val repo = (requireActivity() as MainActivity).repository
         AddItemDialogFragment(repository = repo, itemToEdit = item) { tipe, nama, harga ->
