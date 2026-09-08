@@ -8,6 +8,7 @@ Aplikasi kasir Android **ringan**, **offline**, **tanpa login**, untuk toko akse
 - **Statistik**: daftar pemasukan per hari, dikelompokkan berdasarkan tanggal mulai sesi.
 - **Tema terang/gelap**: toggle langsung dari dashboard (pojok kanan atas), tersimpan otomatis (`ThemeHelper`).
 - **Import/Export CSV**: untuk migrasi data ke versi aplikasi baru atau ekspor untuk keperluan penelitian. Lihat menu titik-tiga di dashboard.
+- **Pindah kategori dengan drag & drop**: tahan (long-press) sebuah baris di tabel Barang atau Transaksi/Pulsa, lalu seret ke tabel satunya untuk memindahkan kategorinya — berguna kalau salah pilih kategori saat input data. Area tabel akan menyala biru saat item diseret masuk sebagai penanda target drop yang valid.
 - **100% offline**: memakai Room (SQLite) lokal, tidak ada dependensi jaringan/login.
 
 ## Arsitektur & alasan "ringan"
