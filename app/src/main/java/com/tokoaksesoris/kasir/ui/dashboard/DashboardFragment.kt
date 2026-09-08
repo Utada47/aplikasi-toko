@@ -1,9 +1,12 @@
 package com.tokoaksesoris.kasir.ui.dashboard
 
+import android.content.ClipData
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
+import android.view.DragEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +21,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.tokoaksesoris.kasir.MainActivity
 import com.tokoaksesoris.kasir.R
+import com.tokoaksesoris.kasir.data.TipeTransaksi
 import com.tokoaksesoris.kasir.data.TransaksiItem
 import com.tokoaksesoris.kasir.databinding.FragmentDashboardBinding
 import com.tokoaksesoris.kasir.utils.ThemeHelper
