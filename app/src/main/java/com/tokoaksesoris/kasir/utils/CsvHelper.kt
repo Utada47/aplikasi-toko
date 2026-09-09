@@ -54,7 +54,7 @@ object CsvHelper {
                             "", "", "", "",
                             i.tipe.name,
                             i.nama,
-                            i.harga.toString(),
+                            formatHargaCsv(i.harga),
                             i.waktu.toString()
                         ).joinToString(",") { csvEscape(it) }
                     )
@@ -145,6 +145,25 @@ object CsvHelper {
         return if (value.contains(",") || value.contains("\"") || value.contains("\n")) {
             "\"" + value.replace("\"", "\"\"") + "\""
         } else value
+    }
+
+    /**
+     * Format harga (Double) jadi teks CSV yang rapi.
+     *
+     * BUG YANG DIPERBAIKI: Kotlin's Double.toString() SELALU menambahkan ".0"
+     * untuk angka bulat (misal 282500.0 -> harusnya cukup "282500"), sehingga
+     * file hasil export tidak sama persis bentuknya dengan file yang tadinya
+     * di-import (yang biasanya berisi angka rupiah bulat tanpa desimal).
+     * Fungsi ini mengembalikan angka bulat TANPA ".0" jika memang tidak ada
+     * pecahan, dan baru pakai representasi desimal kalau harganya benar-benar
+     * punya pecahan (kasus langka untuk harga rupiah, tapi tetap didukung).
+     */
+    private fun formatHargaCsv(harga: Double): String {
+        return if (harga == Math.floor(harga) && !harga.isInfinite()) {
+            harga.toLong().toString()
+        } else {
+            harga.toString()
+        }
     }
 
     private fun parseCsvLine(line: String): List<String> {
