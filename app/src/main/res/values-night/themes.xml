@@ -14,7 +14,7 @@
         <item name="colorOnSecondary">@color/brand_on_accent</item>
         <item name="colorSecondaryContainer">@color/brand_accent_container</item>
 
-        <!-- Tertiary -- dipakai utk elemen kategori Pulsa/Transaksi -->
+        <!-- Tertiary: dipakai utk elemen kategori Pulsa/Transaksi -->
         <item name="colorTertiary">@color/brand_tertiary</item>
         <item name="colorOnTertiary">@color/brand_on_tertiary</item>
         <item name="colorTertiaryContainer">@color/dark_tertiary_container</item>
@@ -38,7 +38,7 @@
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="materialButtonStyle">@style/Widget.KasirAksesoris.Button</item>
 
-        <!-- Shape -- sudut lebih bulat di semua komponen Material3 -->
+        <!-- Shape: sudut lebih bulat di semua komponen Material3 -->
         <item name="shapeAppearanceSmallComponent">@style/Shape.Small</item>
         <item name="shapeAppearanceMediumComponent">@style/Shape.Medium</item>
         <item name="shapeAppearanceLargeComponent">@style/Shape.Large</item>
