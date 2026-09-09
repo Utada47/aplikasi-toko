@@ -4,10 +4,10 @@
          Tema warna: teal (primary) + oranye (accent/secondary) + indigo
          (tertiary, dikhususkan utk kategori Pulsa/Transaksi).
          Nama resource lama (ios_*) dipertahankan supaya seluruh layout/kode
-         yang sudah ada tidak perlu diubah -- cuma NILAI warnanya yang ganti.
+         yang sudah ada tidak perlu diubah, cuma NILAI warnanya yang ganti.
          ══════════════════════════════════════════════════════════════════ -->
 
-    <!-- ── Brand utama ────────────────────────────────────────────────── -->
+    <!-- Brand utama -->
     <color name="brand_primary">#1B7A62</color>
     <color name="brand_primary_dark">#0E4E3E</color>
     <color name="brand_primary_container">#C0EFE0</color>
@@ -18,14 +18,14 @@
     <color name="brand_accent_container">#FFE0C4</color>
     <color name="brand_on_accent">#FFFFFF</color>
 
-    <!-- Tertiary -- dikhususkan utk elemen kategori Pulsa/Transaksi -->
+    <!-- Tertiary: dikhususkan utk elemen kategori Pulsa/Transaksi -->
     <color name="brand_tertiary">#5E5CE6</color>
     <color name="brand_tertiary_container">#E3E2FF</color>
     <color name="brand_on_tertiary">#FFFFFF</color>
     <color name="brand_on_tertiary_container">#0E0066</color>
 
-    <!-- ── Alias lama (ios_*) supaya seluruh layout/kode existing tetap
-         jalan tanpa perubahan -- cuma repoint ke warna brand baru ────── -->
+    <!-- Alias lama (ios_*) supaya seluruh layout/kode existing tetap
+         jalan tanpa perubahan, cuma repoint ke warna brand baru -->
     <color name="ios_blue">#1B7A62</color>
     <color name="ios_blue_dark">#1B7A62</color>
     <color name="ios_orange">#D97B3A</color>
@@ -35,7 +35,7 @@
     <color name="ios_red">#FF3B30</color>
     <color name="ios_red_dark">#FF453A</color>
 
-    <!-- ── Light surfaces ─────────────────────────────────────────────── -->
+    <!-- Light surfaces -->
     <color name="light_background">#F0F5F3</color>
     <color name="light_surface">#FFFFFF</color>
     <color name="light_surface_variant">#DCE9E4</color>
@@ -44,7 +44,7 @@
     <color name="light_outline">#6F7E7A</color>
     <color name="light_outline_variant">#BEC9C5</color>
 
-    <!-- ── Dark surfaces ──────────────────────────────────────────────── -->
+    <!-- Dark surfaces -->
     <color name="dark_background">#0C1512</color>
     <color name="dark_surface">#182019</color>
     <color name="dark_surface_variant">#243329</color>
