@@ -24,18 +24,18 @@ class BarChartView @JvmOverloads constructor(
     private var entries: List<Pair<String, Double>> = emptyList()
 
     private val barPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = Color.parseColor("#0A84FF") // iOS system blue
+        color = Color.parseColor("#1B7A62") // brand primary (teal)
         style = Paint.Style.FILL
     }
 
     private val labelPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = Color.parseColor("#8E8E93") // iOS system gray
+        color = Color.parseColor("#899E98") // brand outline gray
         textSize = 26f
         textAlign = Paint.Align.CENTER
     }
 
     private val valuePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = Color.parseColor("#8E8E93")
+        color = Color.parseColor("#899E98")
         textSize = 24f
         textAlign = Paint.Align.CENTER
     }
