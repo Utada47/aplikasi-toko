@@ -1,20 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Theme.KasirAksesoris" parent="Theme.Material3.Dark.NoActionBar">
-        <item name="colorPrimary">@color/ios_blue_dark</item>
+        <!-- Primary -->
+        <item name="colorPrimary">@color/brand_primary</item>
         <item name="colorPrimaryDark">@color/dark_background</item>
-        <item name="colorSecondary">@color/ios_orange</item>
-        <item name="colorAccent">@color/ios_blue_dark</item>
+        <item name="colorOnPrimary">@color/brand_on_primary</item>
+        <item name="colorPrimaryContainer">@color/dark_primary_container</item>
+        <item name="colorOnPrimaryContainer">@color/dark_on_primary_container</item>
+        <item name="colorAccent">@color/brand_primary</item>
+
+        <!-- Secondary / accent -->
+        <item name="colorSecondary">@color/brand_accent</item>
+        <item name="colorOnSecondary">@color/brand_on_accent</item>
+        <item name="colorSecondaryContainer">@color/brand_accent_container</item>
+
+        <!-- Tertiary -- dipakai utk elemen kategori Pulsa/Transaksi -->
+        <item name="colorTertiary">@color/brand_tertiary</item>
+        <item name="colorOnTertiary">@color/brand_on_tertiary</item>
+        <item name="colorTertiaryContainer">@color/dark_tertiary_container</item>
+        <item name="colorOnTertiaryContainer">@color/dark_on_tertiary_container</item>
+
+        <!-- Surfaces -->
         <item name="android:colorBackground">@color/dark_background</item>
         <item name="colorSurface">@color/dark_surface</item>
         <item name="colorSurfaceVariant">@color/dark_surface_variant</item>
         <item name="colorOnSurface">@color/dark_on_surface</item>
         <item name="colorOnSurfaceVariant">@color/dark_on_surface_variant</item>
+        <item name="colorOutline">@color/dark_outline</item>
+        <item name="colorOutlineVariant">@color/dark_outline_variant</item>
+
+        <!-- Status & navigation bar -->
         <item name="android:statusBarColor">@color/dark_background</item>
         <item name="android:navigationBarColor">@color/dark_surface</item>
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:windowLightNavigationBar">false</item>
+
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="materialButtonStyle">@style/Widget.KasirAksesoris.Button</item>
+
+        <!-- Shape -- sudut lebih bulat di semua komponen Material3 -->
+        <item name="shapeAppearanceSmallComponent">@style/Shape.Small</item>
+        <item name="shapeAppearanceMediumComponent">@style/Shape.Medium</item>
+        <item name="shapeAppearanceLargeComponent">@style/Shape.Large</item>
     </style>
 </resources>
