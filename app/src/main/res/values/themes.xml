@@ -1,24 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Theme.KasirAksesoris" parent="Theme.Material3.Light.NoActionBar">
-        <item name="colorPrimary">@color/ios_blue</item>
-        <item name="colorPrimaryDark">@color/ios_blue</item>
-        <item name="colorSecondary">@color/ios_orange</item>
-        <item name="colorAccent">@color/ios_blue</item>
+        <!-- Primary -->
+        <item name="colorPrimary">@color/brand_primary</item>
+        <item name="colorPrimaryDark">@color/brand_primary</item>
+        <item name="colorOnPrimary">@color/brand_on_primary</item>
+        <item name="colorPrimaryContainer">@color/brand_primary_container</item>
+        <item name="colorOnPrimaryContainer">@color/brand_on_primary_container</item>
+        <item name="colorAccent">@color/brand_primary</item>
+
+        <!-- Secondary / accent -->
+        <item name="colorSecondary">@color/brand_accent</item>
+        <item name="colorOnSecondary">@color/brand_on_accent</item>
+        <item name="colorSecondaryContainer">@color/brand_accent_container</item>
+
+        <!-- Tertiary -- dipakai utk elemen kategori Pulsa/Transaksi -->
+        <item name="colorTertiary">@color/brand_tertiary</item>
+        <item name="colorOnTertiary">@color/brand_on_tertiary</item>
+        <item name="colorTertiaryContainer">@color/brand_tertiary_container</item>
+        <item name="colorOnTertiaryContainer">@color/brand_on_tertiary_container</item>
+
+        <!-- Surfaces -->
         <item name="android:colorBackground">@color/light_background</item>
         <item name="colorSurface">@color/light_surface</item>
         <item name="colorSurfaceVariant">@color/light_surface_variant</item>
         <item name="colorOnSurface">@color/light_on_surface</item>
         <item name="colorOnSurfaceVariant">@color/light_on_surface_variant</item>
-        <item name="android:statusBarColor">@color/light_background</item>
+        <item name="colorOutline">@color/light_outline</item>
+        <item name="colorOutlineVariant">@color/light_outline_variant</item>
+
+        <!-- Status & navigation bar -->
+        <item name="android:statusBarColor">@color/brand_primary</item>
         <item name="android:navigationBarColor">@color/light_surface</item>
-        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightStatusBar">false</item>
         <item name="android:windowLightNavigationBar">true</item>
+
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="materialButtonStyle">@style/Widget.KasirAksesoris.Button</item>
+
+        <!-- Shape -- sudut lebih bulat di semua komponen Material3 -->
+        <item name="shapeAppearanceSmallComponent">@style/Shape.Small</item>
+        <item name="shapeAppearanceMediumComponent">@style/Shape.Medium</item>
+        <item name="shapeAppearanceLargeComponent">@style/Shape.Large</item>
     </style>
 
     <style name="Widget.KasirAksesoris.Button" parent="Widget.Material3.Button">
         <item name="cornerRadius">14dp</item>
+    </style>
+
+    <style name="Shape.Small" parent="ShapeAppearance.Material3.SmallComponent">
+        <item name="cornerSize">10dp</item>
+    </style>
+    <style name="Shape.Medium" parent="ShapeAppearance.Material3.MediumComponent">
+        <item name="cornerSize">16dp</item>
+    </style>
+    <style name="Shape.Large" parent="ShapeAppearance.Material3.LargeComponent">
+        <item name="cornerSize">24dp</item>
     </style>
 </resources>
