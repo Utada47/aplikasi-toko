@@ -53,7 +53,10 @@ class AddItemDialogFragment(
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         _binding = DialogAddItemBinding.inflate(layoutInflater)
 
-        // ── Mode edit: isi data lama ─────────────────────────────────────────
+        // ── Tentukan tab yang aktif di awal (Barang untuk tambah baru, atau ────
+        //    tipe asli item untuk mode edit) -- dipanggil eksplisit lewat kode,
+        //    karena android:checked="true" di XML saja tidak cukup memicu
+        //    tampilan warna terpilih pada MaterialButtonToggleGroup.
         if (itemToEdit != null) {
             binding.tvJudulDialog.text = "Edit Item"
             binding.btnMasukkan.text  = "Simpan Perubahan"
@@ -64,6 +67,8 @@ class AddItemDialogFragment(
             } else {
                 binding.toggleTipe.check(binding.btnTipeBarang.id)
             }
+        } else {
+            binding.toggleTipe.check(binding.btnTipeBarang.id) // default: Barang, langsung tampak biru
         }
 
         // ── Muat saran autocomplete (lintas kategori, sekali saja) ───────────
