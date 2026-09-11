@@ -29,6 +29,9 @@ class StatistikFragment : Fragment() {
 
     private val rupiahFormat = NumberFormat.getNumberInstance(Locale("in", "ID"))
 
+    /** Jarak (px) dari dasar konten yang memicu "muat lebih banyak" saat discroll mendekati bawah. */
+    private val ambangBatasScrollPx by lazy { (resources.displayMetrics.density * 300).toInt() }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -41,6 +44,7 @@ class StatistikFragment : Fragment() {
 
         binding.rvStatistik.layoutManager = LinearLayoutManager(requireContext())
         binding.rvStatistik.adapter = adapterHarian
+        binding.rvStatistik.isNestedScrollingEnabled = false
 
         binding.toggleMode.check(binding.btnModeHarian.id)
         binding.toggleMode.addOnButtonCheckedListener { _, checkedId, isChecked ->
@@ -50,28 +54,38 @@ class StatistikFragment : Fragment() {
                 binding.btnModeTahunan.id -> ModeTampilan.TAHUNAN
                 else -> ModeTampilan.HARIAN
             }
-            val (labelKecil, labelBesar) = viewModel.labelRentangUntukMode(modePilihan)
-            binding.btnRentangKecil.text = labelKecil
-            binding.btnRentangBesar.text = labelBesar
-            binding.toggleRentang.check(binding.btnRentangKecil.id) // reset ke opsi pertama tiap ganti mode
             binding.tvLabelRiwayat.text = when (modePilihan) {
                 ModeTampilan.HARIAN -> "RIWAYAT HARIAN"
                 ModeTampilan.BULANAN -> "RIWAYAT BULANAN"
                 ModeTampilan.TAHUNAN -> "RIWAYAT TAHUNAN"
             }
+            // Scroll balik ke atas dulu supaya user melihat halaman pertama dari mode barunya.
+            binding.scrollStatistik.smoothScrollTo(0, 0)
             viewModel.setMode(modePilihan)
         }
 
-        binding.toggleRentang.check(binding.btnRentangKecil.id)
-        binding.toggleRentang.addOnButtonCheckedListener { _, checkedId, isChecked ->
-            if (!isChecked) return@addOnButtonCheckedListener
-            val index = if (checkedId == binding.btnRentangBesar.id) 1 else 0
-            viewModel.setRentangIndex(index)
+        // ── Infinite scroll: pantau scroll pada NestedScrollView pembungkus,
+        //    karena RecyclerView-nya sendiri tidak scroll independen (nestedScrollingEnabled=false).
+        binding.scrollStatistik.setOnScrollChangeListener { v, _, scrollY, _, _ ->
+            val kontenUtama = v.getChildAt(0) ?: return@setOnScrollChangeListener
+            val sudahDekatBawah = (scrollY + v.height) >= (kontenUtama.height - ambangBatasScrollPx)
+            if (sudahDekatBawah) {
+                viewModel.muatLebihBanyak()
+            }
         }
 
         viewModel.data.observe(viewLifecycleOwner) { list ->
             adapterHarian.submitList(list)
-            binding.tvKosong.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
+            binding.tvKosong.visibility = if (list.isEmpty() && viewModel.sedangMuat.value != true) View.VISIBLE else View.GONE
+        }
+
+        viewModel.sedangMuatLebih.observe(viewLifecycleOwner) { sedangMuat ->
+            binding.loadingLebihBanyak.visibility = if (sedangMuat) View.VISIBLE else View.GONE
+        }
+
+        viewModel.adaLebihBanyak.observe(viewLifecycleOwner) { adaLagi ->
+            val adaData = !viewModel.data.value.isNullOrEmpty()
+            binding.tvSemuaTertampil.visibility = if (!adaLagi && adaData) View.VISIBLE else View.GONE
         }
 
         viewModel.insight.observe(viewLifecycleOwner) { insight ->
@@ -89,7 +103,7 @@ class StatistikFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.muatUlang() // refresh setiap kali tab statistik dibuka
+        viewModel.muatUlang() // refresh dari awal setiap kali tab statistik dibuka
     }
 
     override fun onDestroyView() {
