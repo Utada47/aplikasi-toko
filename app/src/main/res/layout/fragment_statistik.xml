@@ -2,6 +2,7 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollStatistik"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -60,38 +61,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Tahunan"
-                android:textColor="@color/toggle_button_text"
-                android:textSize="13sp"
-                app:backgroundTint="@color/tab_background" />
-        </com.google.android.material.button.MaterialButtonToggleGroup>
-
-        <!-- Filter rentang waktu (hanya relevan utk mode Harian) -->
-        <com.google.android.material.button.MaterialButtonToggleGroup
-            android:id="@+id/toggleRentang"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:singleSelection="true"
-            app:selectionRequired="true">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnRentangKecil"
-                style="@style/Widget.Material3.Button.OutlinedButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="7 Hari"
-                android:textColor="@color/toggle_button_text"
-                android:textSize="13sp"
-                app:backgroundTint="@color/tab_background" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnRentangBesar"
-                style="@style/Widget.Material3.Button.OutlinedButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="30 Hari"
                 android:textColor="@color/toggle_button_text"
                 android:textSize="13sp"
                 app:backgroundTint="@color/tab_background" />
@@ -261,5 +230,43 @@
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="false"
             tools:listitem="@layout/item_statistik_row" />
+
+        <!-- Indikator "memuat lebih banyak": muncul sebentar tiap scroll sampai bawah -->
+        <LinearLayout
+            android:id="@+id/loadingLebihBanyak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingVertical="16dp"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <ProgressBar
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:indeterminateTint="?attr/colorPrimary" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="Memuat lebih banyak..."
+                android:textSize="13sp"
+                android:textColor="?attr/colorOnSurfaceVariant" />
+        </LinearLayout>
+
+        <!-- Muncul kalau seluruh riwayat sudah tertampilkan semua -->
+        <TextView
+            android:id="@+id/tvSemuaTertampil"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="16dp"
+            android:text="— Semua riwayat sudah ditampilkan —"
+            android:textAlignment="center"
+            android:textSize="12sp"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:visibility="gone"
+            tools:visibility="visible" />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
